@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:oasis_restaurant/utils/Constantes/colors.dart';
+import 'package:oasis_restaurant/utils/Routes.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 class BienvenuPage extends StatelessWidget {
@@ -69,7 +70,7 @@ class BienvenuPage extends StatelessWidget {
                     widthFactor: 3.sp,
                     child: ElevatedButton(
                         onPressed: () {
-                          //Navigator.pushNamed(context, MyRoutes.registrationRoute);
+                          Navigator.pushNamedAndRemoveUntil(context, Routes.accueilpage, (route) => false);
                         },
                         style: TextButton.styleFrom(
                           padding: const EdgeInsets.symmetric(vertical: 16),
