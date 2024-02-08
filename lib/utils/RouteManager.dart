@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:oasis_restaurant/pages/category/CategoryPage.dart';
 import 'package:oasis_restaurant/pages/home/AccueilPagePage.dart';
 import 'package:oasis_restaurant/pages/welcome/BienvenuPage.dart';
 import '../pages/home/HomePage.dart';
@@ -14,6 +15,8 @@ class RoutesManager {
         return MaterialPageRoute(builder: (_)=>BienvenuPage());
       case Routes.accueilpage:
         return MaterialPageRoute(builder: (_)=>AccueilPagePage());
+      case Routes.categorypage:
+        return MaterialPageRoute(builder: (_)=>CategoryPage());
       default:
         return MaterialPageRoute(builder: (_)=> HomePage());
     }

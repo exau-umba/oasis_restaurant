@@ -3,4 +3,5 @@ class Routes {
   static const String homepage = "home";
   static const String accueilpage = "accueil";
   static const String bienvenupage = "bienvenu";
+  static const String categorypage = "Category";
 }

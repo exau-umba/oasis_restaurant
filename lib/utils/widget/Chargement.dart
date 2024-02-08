@@ -17,8 +17,8 @@ Widget Chargement([bool isVisible = false]) {
             child: Center(
                 child: LoadingAnimationWidget.discreteCircle(
                   color: Constantes.ColorvertFonce,
-              secondRingColor: Colors_App.Colorverte,
-              thirdRingColor: Colors_App.ColorJaune,
+              secondRingColor: Colors_App.ColorGreen,
+              thirdRingColor: Colors_App.ColorYellow,
               size: 30.sp,
             ))),
       ));

@@ -1,0 +1,20 @@
+[
+  {
+    "title": "Lombar Pizza",
+    "address": "East 46th Street",
+    "category": "Pizza, Italian",
+    "image": "assets/images/t1.png"
+  },
+  {
+    "title": "Sushi Bar",
+    "address": "210 Salt Pond Rd.",
+    "category": "Sushi, Japan",
+    "image": "assets/images/t2.png"
+  },
+  {
+    "title": "Steak House",
+    "address": "East 46th Street",
+    "category": "Steak, American",
+    "image": "assets/images/t3.png"
+  }
+]

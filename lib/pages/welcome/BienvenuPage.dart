@@ -60,7 +60,7 @@ class BienvenuPage extends StatelessWidget {
                       style: TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: 15.sp,
-                          color: Colors_App.ColorGrise),
+                          color: Colors_App.ColorGrey),
                     ),
                   ),
                   SizedBox(
@@ -77,7 +77,7 @@ class BienvenuPage extends StatelessWidget {
                           textStyle: TextStyle(
                               fontSize: 17.sp, fontWeight: FontWeight.w500),
                           shape: StadiumBorder(),
-                          backgroundColor: Colors_App.Colorverte,
+                          backgroundColor: Colors_App.ColorGreen,
                         ),
                         child: Text("Commencer")),
                   )

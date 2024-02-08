@@ -31,11 +31,11 @@ class _HomePageState extends State<HomePage> {
 
   Widget _bottomNav(){
     return BottomNavigationBar(
-      backgroundColor: Colors_App.Colorverte,
+      backgroundColor: Colors_App.ColorGreen,
       currentIndex: _currentIndex,
       type: BottomNavigationBarType.fixed,
       unselectedItemColor: Colors_App.Colorwhite,
-      selectedItemColor: Colors_App.ColorJaune,
+      selectedItemColor: Colors_App.ColorYellow,
       unselectedLabelStyle: TextStyle(fontSize: 12.sp),
       selectedLabelStyle: TextStyle(fontSize: 13.sp),
       items: [

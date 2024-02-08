@@ -44,6 +44,7 @@ dependencies:
   flutter_launcher_icons: ^0.13.1
   ionicons: ^0.2.2
   carousel_slider: ^4.2.1
+  motion_toast: ^2.8.0
 
 
 dev_dependencies:
@@ -78,8 +79,7 @@ flutter:
       - assets/
       - assets/icons/logo.png
       - assets/reactionsApp/errorInatendu.gif
-      - assets/images/welcome_bg.png
-      - assets/images/banner.png
+      - assets/images/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
