@@ -1,9 +1,7 @@
-import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_notch_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:oasis_restaurant/pages/user/ProfilePage.dart';
 import 'package:oasis_restaurant/utils/Constantes/colors.dart';
 import 'package:ionicons/ionicons.dart';
-import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
 import 'AccueilPagePage.dart';

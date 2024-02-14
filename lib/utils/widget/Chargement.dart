@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:oasis_restaurant/utils/Constantes/Constantes.dart';
 import 'package:oasis_restaurant/utils/Constantes/colors.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 

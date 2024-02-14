@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:motion_toast/motion_toast.dart';
 import 'package:oasis_restaurant/utils/Constantes/Constantes.dart';
 import 'package:oasis_restaurant/utils/Constantes/colors.dart';
 import 'package:oasis_restaurant/utils/Routes.dart';
