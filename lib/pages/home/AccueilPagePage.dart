@@ -4,6 +4,7 @@ import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:oasis_restaurant/utils/Constantes/PaddingDelimiter.dart';
 import 'package:oasis_restaurant/utils/Constantes/colors.dart';
@@ -419,7 +420,10 @@ class _AccueilPagePageState extends State<AccueilPagePage> {
                           )
                       ),
               ),
-            )
+            ),
+            SizedBox(
+              height: 50.sp,
+            ),
           ],
         ),
       ),
@@ -442,7 +446,7 @@ class _AccueilPagePageState extends State<AccueilPagePage> {
               ),
               InkWell(
                 onTap: (){
-                  Navigator.pushNamed(context, Routes.categorypage);
+                  GoRouter.of(context).push(Routes.categorypage);
                 },
                 child: Container(
                   padding: EdgeInsets.all(9.sp),
@@ -487,6 +491,9 @@ class _AccueilPagePageState extends State<AccueilPagePage> {
                     ),
                   ],
                 ),
+                onTap: (){
+                  GoRouter.of(context).push(Routes.listFoodByCategorypage);
+                },
               );
             },
           ),

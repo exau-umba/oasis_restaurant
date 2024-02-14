@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:motion_toast/motion_toast.dart';
+import 'package:oasis_restaurant/utils/Constantes/Constantes.dart';
 import 'package:oasis_restaurant/utils/Constantes/colors.dart';
+import 'package:oasis_restaurant/utils/Routes.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-import '../../utils/Constantes/PaddingDelimiter.dart';
+import '../../../utils/Constantes/PaddingDelimiter.dart';
 
 class CategoryPage extends StatelessWidget {
   const CategoryPage({super.key});
@@ -15,16 +18,14 @@ class CategoryPage extends StatelessWidget {
       appBar: AppBar(
         centerTitle: true,
         title: Text("Categories",
-          style: TextStyle(
-            color: Colors_App.ColorGrey
-          ),
+          style: Constantes.styleTitleAppBar,
         ),
         backgroundColor: Colors_App.Colorwhite,
         leading: InkWell(
           onTap: (){
             Navigator.pop(context);
           },
-            child: Icon(Icons.arrow_back_ios, color: Colors_App.ColorGrey,)),
+            child: Icon(Icons.arrow_back_ios, color: Colors_App.Colorblack, size: 20.sp,)),
       ),
       body: _body(),
     );
@@ -42,10 +43,11 @@ class CategoryPage extends StatelessWidget {
         itemBuilder: (context, index){
           return InkWell(
             onTap: (){
-              MotionToast.info(
+              GoRouter.of(context).push(Routes.listFoodByCategorypage);
+              /*MotionToast.info(
                 title:  Text("Pas disponible"),
                 description:  Text("Cette fonctionnalité n'est pas encore dispo"),
-              ).show(context);
+              ).show(context);*/
             },
             child: Container(
               padding: EdgeInsets.all(12.sp),

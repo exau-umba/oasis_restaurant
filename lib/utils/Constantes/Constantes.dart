@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
+
+import 'colors.dart';
 
 class Constantes{
-  static const Color ColorvertFonce = Color.fromRGBO(35, 110, 72, 1);
-  static const Color Colorwhite = Colors.white;
-  static const Color Colorblack = Colors.black;
+  static const String  BASE_URL = "";
 
-  static const String  BASE_URL = "https://bbopt.net";
+  static TextStyle styleTitleAppBar = TextStyle(
+      color: Colors_App.Colorblack,
+      fontWeight: FontWeight.normal,
+      fontSize: 18.sp
+  );
 
 }
