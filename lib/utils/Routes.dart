@@ -6,4 +6,7 @@ class Routes {
   static const String categorypage = "/Category";
   static const String profilepage = "/profile";
   static const String listFoodByCategorypage = "/listFoodByCategory";
+  static const String rechercheFoodpage = "/rechercheFood";
+  static const String detailFoodpage = "/detailFood";
+  static const String panierpage = "/panier";
 }

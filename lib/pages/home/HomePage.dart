@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:oasis_restaurant/pages/food/PanierPage.dart';
+import 'package:oasis_restaurant/pages/food/RechercheFoodPage.dart';
 import 'package:oasis_restaurant/pages/user/ProfilePage.dart';
 import 'package:oasis_restaurant/utils/Constantes/colors.dart';
 import 'package:ionicons/ionicons.dart';
@@ -17,6 +19,8 @@ class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
   final pages= [
     AccueilPagePage(),
+    RechercheFoodPage(),
+    PanierPage(),
     ProfilePage()
   ];
 
@@ -42,6 +46,18 @@ class _HomePageState extends State<HomePage> {
           icon: Icon(Ionicons.home),
           title: Text(
               'Accueil'
+          ),
+        ),
+        SalomonBottomBarItem(
+          icon: Icon(Ionicons.search),
+          title: Text(
+              'Recherche'
+          ),
+        ),
+        SalomonBottomBarItem(
+          icon: Icon(Icons.local_grocery_store),
+          title: Text(
+              'Panier'
           ),
         ),
         SalomonBottomBarItem(

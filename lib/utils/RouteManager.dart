@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:oasis_restaurant/pages/food/DetailFoodPage.dart';
 import 'package:oasis_restaurant/pages/food/ListFoodByCategory.dart';
+import 'package:oasis_restaurant/pages/food/PanierPage.dart';
+import 'package:oasis_restaurant/pages/food/RechercheFoodPage.dart';
 import 'package:oasis_restaurant/pages/home/AccueilPagePage.dart';
 import 'package:oasis_restaurant/pages/welcome/BienvenuPage.dart';
 import '../pages/food/category/CategoryPage.dart';
@@ -40,7 +43,7 @@ class RoutesManager {
         path: Routes.bienvenupage,
         pageBuilder: (context, state) {
           return CustomTransitionPage(
-            transitionDuration: const Duration(seconds: 1),
+            transitionDuration: const Duration(milliseconds: 120),
             key: state.pageKey,
             child: BienvenuPage(),
             transitionsBuilder: (context, animation, secondaryAnimation, child) {
@@ -70,7 +73,7 @@ class RoutesManager {
         path: Routes.listFoodByCategorypage,
         pageBuilder: (context, state) {
           return CustomTransitionPage(
-            transitionDuration: const Duration(seconds: 2),
+            transitionDuration: const Duration(milliseconds: 120),
             key: state.pageKey,
             child: ListFoodByCategory(),
             transitionsBuilder: (context, animation, secondaryAnimation, child) {
@@ -82,6 +85,24 @@ class RoutesManager {
         },
         builder: (BuildContext context, GoRouterState state) {
           return  ListFoodByCategory();
+        },
+      ),
+      GoRoute(
+        path: Routes.rechercheFoodpage,
+        builder: (BuildContext context, GoRouterState state) {
+          return  RechercheFoodPage();
+        },
+      ),
+      GoRoute(
+        path: Routes.detailFoodpage,
+        builder: (BuildContext context, GoRouterState state) {
+          return  DetailFoodPage();
+        },
+      ),
+      GoRoute(
+        path: Routes.panierpage,
+        builder: (BuildContext context, GoRouterState state) {
+          return  PanierPage();
         },
       ),
     ],
