@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:motion_toast/motion_toast.dart';
 import 'package:oasis_restaurant/utils/Constantes/Constantes.dart';
+import 'package:oasis_restaurant/utils/Routes.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../utils/Constantes/colors.dart';
@@ -23,12 +25,7 @@ class _ListFoodByCategoryState extends State<ListFoodByCategory> {
             "Categorie",
           style: Constantes.styleTitleAppBar,
         ),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios, color: Colors_App.Colorblack, size: 20.sp,),
-          onPressed: (){
-            GoRouter.of(context).pop();
-          },
-        ),
+        leading: Constantes.leadingAppBar(GoRouter.of(context)),
         actions: [
           Container(
             padding: EdgeInsets.all(5.sp),
@@ -48,7 +45,13 @@ class _ListFoodByCategoryState extends State<ListFoodByCategory> {
                   },
                 ),
                 InkWell(
-                    child: Icon(Icons.shopping_cart_outlined,),
+                  child: Badge(
+                    label: Text("0"),
+                    child: Icon(
+                      Icons.local_grocery_store_sharp,
+                      color: Colors_App.Colorwhite,
+                    ),
+                  ),
                   onTap: (){
 
                   },
@@ -70,13 +73,25 @@ class _ListFoodByCategoryState extends State<ListFoodByCategory> {
     return ListView.separated(
       separatorBuilder: (context, index) => Divider(),
       itemCount: 20,
+        padding: EdgeInsets.only(top: 15.sp),
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
         itemBuilder: (context, index){
           return ListTile(
-            onTap: (){},
-            leading: Image.asset("assets/images/t3.png", fit: BoxFit.cover,),
-            minLeadingWidth: 20.sp,
+            onTap: (){
+              GoRouter.of(context).push(Routes.detailFoodpage);
+            },
+            dense: true,
+            leading: Container(
+              width: Adaptive.w(20),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8.sp),
+                child: Image.asset(
+                  "assets/images/t3.png",
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
             title: Text("Chawrama"),
             subtitle: Column(
               mainAxisSize: MainAxisSize.min,
@@ -118,8 +133,16 @@ class _ListFoodByCategoryState extends State<ListFoodByCategory> {
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.favorite),
-                Icon(Icons.add),
+                InkWell(
+                    child: Icon(Icons.favorite),
+                  onTap: (){},
+                ),
+                SizedBox(width: Adaptive.w(3)),
+                InkWell(
+                    child: Icon(Icons.add),
+                  onTap: (){},
+
+                ),
               ],
             ),
           );

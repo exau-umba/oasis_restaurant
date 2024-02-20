@@ -16,6 +16,7 @@ class CategoryPage extends StatelessWidget {
       backgroundColor: Colors_App.ColorGreyPage,
       appBar: AppBar(
         centerTitle: true,
+        elevation: 0.sp,
         title: Text("Categories",
           style: Constantes.styleTitleAppBar,
         ),
@@ -33,47 +34,51 @@ class CategoryPage extends StatelessWidget {
   _body() {
     return GridView.builder(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3, // number of items in each row
-          mainAxisSpacing: 8.0, // spacing between rows
-          crossAxisSpacing: 8.0, // spacing between columns
+          crossAxisCount: 2, // number of items in each row
+          mainAxisSpacing: 20.sp, // spacing between rows
+          crossAxisSpacing: 20.sp, // spacing between columns
         ),
         padding: EdgeInsets.symmetric(horizontal: PaddingDelimiter.paddingHorizontal),
-        itemCount: 21,
+        itemCount: 6,
         itemBuilder: (context, index){
           return InkWell(
-            onTap: (){
+            onTap: () {
               GoRouter.of(context).push(Routes.listFoodByCategorypage);
-              /*MotionToast.info(
-                title:  Text("Pas disponible"),
-                description:  Text("Cette fonctionnalité n'est pas encore dispo"),
-              ).show(context);*/
             },
-            child: Container(
-              padding: EdgeInsets.all(12.sp),
-              height: 2.h,
-              width: Adaptive.w(15),
-              decoration: BoxDecoration(
-                  color: Colors_App.Colorwhite,
-                  borderRadius: BorderRadius.circular(15.sp)
-              ),
-              child: Stack(
-                children: [
-                  Container(
-                    margin: EdgeInsets.all(12.sp),
-                      decoration: BoxDecoration(
-                        color: Colors_App.ColorGreen,
-                          borderRadius: BorderRadius.circular(15.sp)
+            child: Card(
+                color: Colors_App.ColorGreen,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16.0.sp),
+                ),
+                elevation: 9.sp,
+                child: Padding(
+                  padding: EdgeInsets.all(8.0.sp),
+                  child: Stack(
+                    children: [
+                      Align(
+                        alignment: Alignment.topCenter,
+                        child: Image.asset(
+                          "assets/images/img (1).png",
+                          width: Adaptive.w(30),
+                        ),
                       ),
-                      child: Image.asset("assets/images/img (1).png")
+                      SizedBox(
+                        height: 5.h,
+                      ),
+                      Positioned(
+                        bottom: 15.sp,
+                        right: 27.sp,
+                        child: Text(
+                          "Category",
+                          style: TextStyle(
+                              color: Colors_App.Colorwhite,
+                              fontSize: 17.sp,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      )
+                    ],
                   ),
-                  Positioned(
-                    bottom: 0.sp,
-                      left: 20.5.sp,
-                      child: Text("Burger")
-                  )
-                ],
-              ),
-            ),
+                )),
           );
         }
     );

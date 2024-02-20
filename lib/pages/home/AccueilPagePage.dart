@@ -240,6 +240,7 @@ class _AccueilPagePageState extends State<AccueilPagePage> {
                       //     MaterialPageRoute(
                       //       builder: (context) => Details(index),
                       //     ));
+                      GoRouter.of(context).push(Routes.detailFoodpage);
                     },
                     child: Card(
                       elevation: 0,
@@ -278,13 +279,7 @@ class _AccueilPagePageState extends State<AccueilPagePage> {
                                     ),
                                   ),
                                 ),
-                                SizedBox(height: 0.3.h,),
-                                Text("Cheese burger",//names[index],
-                                    style: TextStyle(
-                                      color: Colors_App.ColorGrey.withOpacity(.5),
-                                      fontSize: 15.sp,
-                                    )),
-                                SizedBox(height: 14.sp),
+                                SizedBox(height: 2.h,),
                                 Text("Cheese burger",//with_[index],
                                     style: TextStyle(
                                       color: Colors_App.Colorblack,
@@ -355,7 +350,7 @@ class _AccueilPagePageState extends State<AccueilPagePage> {
                                 children: [
                                   Text(
                                     "-50%",//ratting[index].toString(),
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         color: Colors.white,
                                         ),
                                   )
@@ -365,24 +360,27 @@ class _AccueilPagePageState extends State<AccueilPagePage> {
                           ),
                           Positioned(
                             right: 0.sp,
-                            bottom: 12.sp,
+                            bottom: 5.sp,
                               child: InkWell(
                                 onTap: (){
                                   print("Hello");
                                 },
-                                child: Container(
-                                  height: 5.h,
-                                  width: Adaptive.w(15),
-                                  decoration: BoxDecoration(
-                                      color: Colors_App.ColorYellow,
-                                      shape: BoxShape.circle,
-                                  ),
-                                  child: Icon(
-                                    Icons.add,
-                                    color: Colors_App.Colorwhite,
-                                    size: 18.sp,
-                                  ),
-                                ),
+                                child: ElevatedButton(
+                                    style: ButtonStyle(
+                                        shape: MaterialStatePropertyAll(CircleBorder()),
+                                        backgroundColor: MaterialStatePropertyAll(Colors_App.ColorYellow),
+                                        iconSize: MaterialStatePropertyAll(20.sp),
+                                        minimumSize: MaterialStatePropertyAll(Size.fromRadius(16.sp))
+                                    ),
+                                    onPressed: (){
+                                      setState(() {
+                                      });
+                                    },
+                                    child: Icon(
+                                      Icons.add,
+                                      size: 17.sp,
+                                    )
+                                )
                               ),
                           )
                         ],
@@ -392,8 +390,8 @@ class _AccueilPagePageState extends State<AccueilPagePage> {
                 },
               ),
             ),
-            const SizedBox(
-              height: 20,
+             SizedBox(
+              height: 2.h,
             ),
             //specialCard(images[7]),
             Align(
@@ -476,6 +474,7 @@ class _AccueilPagePageState extends State<AccueilPagePage> {
               return InkWell(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text("Burger"),
                     Container(
