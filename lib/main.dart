@@ -4,8 +4,8 @@ import 'package:oasis_restaurant/apps/MonApplication.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init();
-
   ErrorWidget.builder = (FlutterErrorDetails details) {
     print(details.stack);
     return Scaffold(

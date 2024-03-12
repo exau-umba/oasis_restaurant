@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:oasis_restaurant/pages/food/PanierPage.dart';
-import 'package:oasis_restaurant/pages/food/RechercheFoodPage.dart';
 import 'package:oasis_restaurant/pages/user/ProfilePage.dart';
 import 'package:oasis_restaurant/utils/Constantes/colors.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
+import '../repa/PanierPage.dart';
+import '../repa/RechercheFoodPage.dart';
 import 'AccueilPagePage.dart';
 
 class HomePage extends StatefulWidget {
@@ -49,21 +49,21 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         SalomonBottomBarItem(
-          icon: Icon(Ionicons.search),
+          icon: Icon(Icons.favorite),
           title: Text(
-              'Recherche'
+              'Favori'
           ),
         ),
         SalomonBottomBarItem(
-          icon: Icon(Icons.local_grocery_store),
+          icon: Badge(label: Text("8"),child: Icon(Icons.local_grocery_store)),
           title: Text(
               'Panier'
           ),
         ),
         SalomonBottomBarItem(
-          icon: Icon(Ionicons.person),
+          icon: Icon(Icons.reorder),
           title: Text(
-              'Profil'
+              'Paramètre'
           ),
         ),
       ],

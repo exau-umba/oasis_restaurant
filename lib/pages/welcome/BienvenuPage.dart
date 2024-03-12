@@ -1,14 +1,41 @@
+import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:oasis_restaurant/utils/Constantes/colors.dart';
 import 'package:oasis_restaurant/utils/Routes.dart';
+import 'package:oasis_restaurant/utils/widget/Chargement.dart';
+import 'package:provider/provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-class BienvenuPage extends StatelessWidget {
+import '../../controller/AuthenticationController.dart';
+import '../../controller/UserController.dart';
+
+class BienvenuPage extends StatefulWidget {
   const BienvenuPage({super.key});
 
   @override
+  State<BienvenuPage> createState() => _BienvenuPageState();
+}
+
+class _BienvenuPageState extends State<BienvenuPage> {
+  @override
+
+  Faker fakerData = Faker();
+  bool isVisible = false;
+
+  @override
   Widget build(BuildContext context) {
+    Map dataR = {
+      "name":fakerData.person.name(),
+      "email":"oasisclient.${fakerData.internet.freeEmail()}",
+      "password":"Oasis-client@2024"
+    };
+
+    Map data = {
+      "email": "umbaexauce233@gmail.com",
+      "password": "Oasis-rdc"
+    };
+    var auth = context.watch<AuthenticationController>();
     return Scaffold(
       body: Stack(
         children: [
@@ -71,7 +98,12 @@ class BienvenuPage extends StatelessWidget {
                     widthFactor: 3.sp,
                     child: ElevatedButton(
                         onPressed: () {
+                          setState(() {
+                            isVisible = true;
+                          });
                           GoRouter.of(context).go(Routes.homepage);
+                          //_naviguerVersHomePage;
+                          //auth.login(data);
                         },
                         style: TextButton.styleFrom(
                           padding: const EdgeInsets.symmetric(vertical: 16),
@@ -85,7 +117,8 @@ class BienvenuPage extends StatelessWidget {
                 ],
               ),
             ),
-          )
+          ),
+          Chargement(isVisible)
         ],
       ),
     );

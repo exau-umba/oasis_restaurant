@@ -8,5 +8,6 @@ class Routes {
   static const String listFoodByCategorypage = "/listFoodByCategory";
   static const String rechercheFoodpage = "/rechercheFood";
   static const String detailFoodpage = "/detailFood";
+  static const String listPlat = "/listPlat";
   static const String panierpage = "/panier";
 }

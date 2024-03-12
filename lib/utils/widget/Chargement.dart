@@ -8,17 +8,39 @@ Widget Chargement([bool isVisible = false]) {
       visible: isVisible,
       child: Align(
         alignment: Alignment.center,
-        child: Container(
-            width: double.infinity,
-            height: double.infinity,
-            //color: Colors.grey.withOpacity(0.4),
-            color: Colors.black54,
-            child: Center(
-                child: LoadingAnimationWidget.discreteCircle(
-                  color: Colors_App.ColorGreen,
-              secondRingColor: Colors_App.ColorGreen,
-              thirdRingColor: Colors_App.ColorYellow,
-              size: 30.sp,
-            ))),
+        child: Stack(
+          children: [
+            Container(
+              width: Adaptive.w(double.infinity),
+              height: double.infinity.h,
+              color: Colors.black45,
+            ),
+                Positioned(
+                  bottom: 80.sp,
+                  top: 80.sp,
+                  left: 50.sp,
+                  child: Container(
+            decoration: BoxDecoration(
+                  color: Colors_App.Colorwhite,
+                  borderRadius: BorderRadius.circular(10.sp),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors_App.Colorblack,
+                      offset: Offset(0.sp, 0.sp),
+                      blurRadius: 8.sp
+                    ),
+                  ],
+            ),
+                  width: Adaptive.w(20),
+                  height: 10.h,
+                  //color: Colors.black54,
+                  child: Center(
+                      child: LoadingAnimationWidget.hexagonDots(
+                        color: Colors_App.ColorGreen,
+                    size: 25.sp,
+                  ))),
+                ),
+              ],
+        ),
       ));
 }

@@ -82,7 +82,7 @@ Future<HttpResponse> postData(String api_url, Map data, {String? token}) async {
       "Content-Type": "application/json",
       "Authorization": "Bearer $_tkn"
     }).timeout(Duration(seconds: 2));
-    print(response.body);
+    print("BODY : ${response.body}");
     if(!kReleaseMode){
       // alice.onHttpResponse(response);
     }
@@ -94,8 +94,8 @@ Future<HttpResponse> postData(String api_url, Map data, {String? token}) async {
     return HttpResponse(status: st, data: msg); // {"status": st, "msg": msg};
 
   } catch (e, trace) {
-    printWrapped(e.toString());
-    printWrapped(trace.toString());
+    printWrapped(" ERREUR E: ${e.toString()}");
+    printWrapped("ERREUR TRACE :${trace.toString()}");
 
     return HttpResponse(
         status: false,

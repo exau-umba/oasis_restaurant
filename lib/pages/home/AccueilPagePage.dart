@@ -31,57 +31,60 @@ class _AccueilPagePageState extends State<AccueilPagePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      /*appBar: AppBar (
-        backgroundColor: Colors_App.Colorverte,
-        title:Row(
+      appBar: AppBar (
+        backgroundColor: Colors_App.ColorGreen,
+          toolbarHeight: 45.sp,
+        elevation: 0.sp,
+        title:Stack(
           children: [
-            Container(
-              padding: EdgeInsets.only(right: 16),
-                child: Icon(Ionicons.person, size: 25.sp,)
-            ),
-            Expanded(
-                flex: 3,
-                child: Container(
-                  //margin: const EdgeInsets.symmetric(horizontal: 8),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Good morning",
-                        style: TextStyle(
-                            color: Color(0xff979899),
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500),
-                      ),
-                      SizedBox(
-                        height: 0.8.h,
-                      ),
-                      Text(
-                        "Amelia Barlow",
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600),
-                      ),
-                    ],
+            Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("Bonjour Mr !",
+                  style: TextStyle(
+                      color: Colors_App.Colorwhite,
+                    fontSize: 16.sp
                   ),
-                )),
+            ),
+                  Badge(
+                      label: Text('0'),
+                      child: Icon(Ionicons.notifications, color: Colors_App.Colorwhite,)
+                  )
+                ],
+              ),
+                SizedBox(height: 2.h,),
+                Container(
+                  decoration: BoxDecoration(
+                      color: Colors_App.Colorwhite,
+                      boxShadow: [
+                        BoxShadow(color: Colors.black12, offset: Offset(0, 1), blurRadius: 10.sp)
+                      ],
+                      borderRadius: BorderRadius.all(Radius.circular(24.sp))),
+                  child: TextField(
+                      textAlignVertical: TextAlignVertical.center,
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: "Recherche...",
+                        hintStyle: TextStyle(
+                            fontSize: 16.sp,
+                            color: Colors_App.ColorGrey,
+                            fontWeight: FontWeight.w500),
+                        contentPadding: EdgeInsets.all(18.sp),
+                        prefixIcon: Icon(
+                          Ionicons.search,
+                          color: Colors_App.ColorGreen,
+                        ),
+                      )),
+                )
+              ],
+            ),
+
           ],
         ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            child: Container(
-                padding: EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                    color: Colors_App.ColorJaune,
-                    borderRadius: BorderRadius.circular(8.sp)
-                ),
-                child: Icon(Ionicons.notifications, color:Colors_App.Colorverte)),
-          )
-        ],
-      ),*/
+      ),
       backgroundColor: Colors_App.ColorGreyPage,
       body: _body(),
     );
@@ -91,59 +94,8 @@ class _AccueilPagePageState extends State<AccueilPagePage> {
     return SingleChildScrollView(
       child: Stack(
         children: [
-          Container(
-            color: Colors_App.ColorGreen,
-            padding: EdgeInsets.symmetric(horizontal: 14.sp),
-            width: Adaptive.w(double.infinity),
-            height: 15.h,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text("Bonjour Mr !",
-                  style: TextStyle(
-                    color: Colors_App.Colorwhite
-                  ),
-                ),
-                Badge(
-                  backgroundColor: Colors_App.ColorYellow,
-                    label: Text('0'),
-                    child: Icon(Ionicons.settings_outline, color: Colors_App.Colorwhite,)
-                )
-              ],
-            ),
-          ),
           Column(
             children: [
-              SizedBox(
-                height: 10.h,
-              ),
-
-              Padding(
-                  padding: EdgeInsets.symmetric(horizontal: PaddingDelimiter.paddingHorizontal),
-                  child: Container(
-                    decoration: BoxDecoration(
-                        color: Colors_App.Colorwhite,
-                        boxShadow: [
-                          BoxShadow(color: Colors.black12, offset: Offset(0, 1), blurRadius: 10.sp)
-                        ],
-                        borderRadius: BorderRadius.all(Radius.circular(24.sp))),
-                    child: TextField(
-                        textAlignVertical: TextAlignVertical.center,
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText: "Recherche...",
-                          hintStyle: TextStyle(
-                              fontSize: 16.sp,
-                              color: Colors_App.ColorGrey,
-                              fontWeight: FontWeight.w500),
-                          contentPadding: EdgeInsets.all(18.sp),
-                          prefixIcon: Icon(
-                            Ionicons.search,
-                            color: Colors_App.ColorGreen,
-                          ),
-                        )),
-                  )),
-
               CarouselSlider(
                 items: imageUrls.map((url) {
                   return Container(
@@ -181,7 +133,7 @@ class _AccueilPagePageState extends State<AccueilPagePage> {
                 }).toList(),
               ),
               category(),
-              SizedBox(height: 0.8.h),
+              SizedBox(height: 2.h),
               _menuDuJour()
             ],
           ),
@@ -397,7 +349,9 @@ class _AccueilPagePageState extends State<AccueilPagePage> {
             Align(
               alignment: Alignment.bottomRight,
               child: InkWell(
-                onTap: (){},
+                onTap: (){
+                  GoRouter.of(context).push(Routes.listPlat);
+                },
                 child: Container(
                         decoration: BoxDecoration(
                           color: Colors_App.ColorYellow,
@@ -408,7 +362,7 @@ class _AccueilPagePageState extends State<AccueilPagePage> {
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Text("Voir tout",
+                              Text("Voir autres plats",
                                 style: TextStyle(
                                   color: Colors_App.Colorwhite
                                 ),
@@ -420,7 +374,7 @@ class _AccueilPagePageState extends State<AccueilPagePage> {
               ),
             ),
             SizedBox(
-              height: 50.sp,
+              height: 5.sp,
             ),
           ],
         ),

@@ -16,7 +16,7 @@ class PanierPage extends StatefulWidget {
 
 class _PanierPageState extends State<PanierPage> {
   int itemCount = 0;
-  int platCount = 20;
+  int platCount = 8;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,10 +25,12 @@ class _PanierPageState extends State<PanierPage> {
         backgroundColor: Colors_App.Colorwhite,
         elevation: 0.sp,
         title: Text(
-            "Panier",
-          style: Constantes.styleTitleAppBar,
+          "Panier",
+          style: TextStyle(
+              fontSize: 20.sp,
+              color: Colors_App.Colorblack
+          ),
         ),
-        leading: Constantes.leadingAppBar(GoRouter.of(context)),
         actions: [
           Container(
             padding: EdgeInsets.all(5.sp),
@@ -44,7 +46,7 @@ class _PanierPageState extends State<PanierPage> {
                 InkWell(
                   child: Icon(Icons.search,),
                   onTap: (){
-
+                    showSnackBar(context, "Bientôt disponible");
                   },
                 ),
                 InkWell(
@@ -53,7 +55,7 @@ class _PanierPageState extends State<PanierPage> {
                     color: Colors_App.Colorwhite,
                   ),
                   onTap: (){
-                    //GoRouter.of(context).push(Routes.panierpage);
+                    ouvrirDialog(context, content: "Voulez-vous vraiment supprimer tout les plats  ?", title: "Suppression");
                   },
                 ),
               ],
@@ -80,18 +82,7 @@ class _PanierPageState extends State<PanierPage> {
               //GoRouter.of(context).push(Routes.detailFoodpage);
             },
             onLongPress: () async{
-              bool? resulat = await showDialog<bool>(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    title: Center(child: Text('Supprimer ce plat')),
-                    content: Text("Publier",),
-                    actions: [
-                      Text("Oui")
-                    ],
-                  );
-                },
-              );
+              ouvrirDialog(context,content: "Voulez-vous supprimer ce plat ?", title: "Suppression d'un plat",);
             },
             dense: true,
             leading: Container(
@@ -233,7 +224,7 @@ class _PanierPageState extends State<PanierPage> {
                   padding: EdgeInsets.symmetric(vertical: 16.sp)
                 ),
                   onPressed: (){
-
+                    showSnackBar(context, "La commande sera bientôt disponible");
                   },
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
@@ -267,5 +258,50 @@ class _PanierPageState extends State<PanierPage> {
         ),
       )
     ];
+  }
+  ouvrirDialog(context, {required String title, required String content}) async {
+    bool? resulat = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        //var auth = context.watch<AuthentificationCtrl>();
+        return AlertDialog(
+          title: Text(title),
+          content: new Text(content),
+          actions: <Widget>[
+            TextButton(
+              child: new Text(
+                "Annuler",
+                style: TextStyle(color: Colors.grey),
+              ),
+              onPressed: () {
+                Navigator.pop(context, false);
+              },
+            ),
+            new TextButton(
+              child: new Text(
+                "Confirmer", style: TextStyle(color: Colors.orange),),
+              onPressed: () {
+                Navigator.pop(context, true);
+              },
+            ),
+          ],
+        );
+      },
+    );
+
+    if (resulat != null) {
+      var message = !resulat ? "Bientôt disponible" : "Suppression bientôt disponible";
+      showSnackBar(context, message);
+    }
+  }
+  showSnackBar(context, String message) {
+    final scaffold = ScaffoldMessenger.of(context);
+    scaffold.showSnackBar(SnackBar(
+      content: Text(message),
+      action:
+      SnackBarAction(label: 'OK',
+          textColor: Colors.orange,
+          onPressed: scaffold.hideCurrentSnackBar),
+    ));
   }
 }

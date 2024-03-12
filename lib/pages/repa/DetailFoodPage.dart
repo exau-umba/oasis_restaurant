@@ -15,6 +15,7 @@ class DetailFoodPage extends StatefulWidget {
 
 class _DetailFoodPageState extends State<DetailFoodPage> {
   int itemCount = 0;
+  var ct;
   int itemPanier = 0;
   int price = 10;
   @override
@@ -150,7 +151,7 @@ class _DetailFoodPageState extends State<DetailFoodPage> {
                               });
                             },
                           ),
-                          Text("$itemCount"),
+                          Text("${itemCount}"),
                           InkWell(
                             child: Container(
                               height: 4.h,
@@ -198,7 +199,7 @@ class _DetailFoodPageState extends State<DetailFoodPage> {
                         height: 1.h,
                       ),
                       Text(
-                          "Dshlsdhmglsdgkmhfgkgjgjkdgfgdsdjgdjgldsgbdlgljdgtion",
+                          "Duis in neque efficitur. Vestibulum semper arcu et enim tempus cursus. Donec tincidunt dolor neque. Sed sed.",
                         style: TextStyle(
                           fontSize: 20.sp
                         ),
@@ -219,7 +220,7 @@ class _DetailFoodPageState extends State<DetailFoodPage> {
                         ),
                       ),
                       Text(""
-                          "\$$price",
+                          "\$${ct=price*itemCount}",
                         style: TextStyle(
                           fontSize: 20.sp
                         ),
@@ -227,7 +228,7 @@ class _DetailFoodPageState extends State<DetailFoodPage> {
                     ],
                   ),
                   SizedBox(
-                    height: 18.h,
+                    height: 5.h,
                   ),
                   FractionallySizedBox(
                     widthFactor: 4.3.sp,

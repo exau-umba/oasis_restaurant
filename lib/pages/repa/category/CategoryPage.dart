@@ -17,8 +17,12 @@ class CategoryPage extends StatelessWidget {
       appBar: AppBar(
         centerTitle: true,
         elevation: 0.sp,
-        title: Text("Categories",
-          style: Constantes.styleTitleAppBar,
+        title: Text(
+          "Categories",
+          style: TextStyle(
+              fontSize: 20.sp,
+              color: Colors_App.Colorblack
+          ),
         ),
         backgroundColor: Colors_App.Colorwhite,
         leading: InkWell(
@@ -39,7 +43,7 @@ class CategoryPage extends StatelessWidget {
           crossAxisSpacing: 20.sp, // spacing between columns
         ),
         padding: EdgeInsets.symmetric(horizontal: PaddingDelimiter.paddingHorizontal),
-        itemCount: 6,
+        itemCount: 8,
         itemBuilder: (context, index){
           return InkWell(
             onTap: () {

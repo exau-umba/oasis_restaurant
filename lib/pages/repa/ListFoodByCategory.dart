@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:motion_toast/motion_toast.dart';
 import 'package:oasis_restaurant/utils/Constantes/Constantes.dart';
 import 'package:oasis_restaurant/utils/Routes.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -19,11 +18,15 @@ class _ListFoodByCategoryState extends State<ListFoodByCategory> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors_App.Colorwhite,
+        backgroundColor: Colors_App.ColorGreyPage,
         centerTitle: true,
+        elevation: 0.sp,
         title: Text(
-            "Categorie",
-          style: Constantes.styleTitleAppBar,
+          "Categorie",
+          style: TextStyle(
+              fontSize: 20.sp,
+              color: Colors_App.Colorblack
+          ),
         ),
         leading: Constantes.leadingAppBar(GoRouter.of(context)),
         actions: [

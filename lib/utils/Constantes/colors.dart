@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 class Colors_App{
   static const ColorGreen = Color.fromRGBO(7,114,53, 1);
+  static const ColorGreenWithOpacity = Color.fromRGBO(
+      7, 114, 53, 0.403921568627451);
   static const Color ColorYellow = Color.fromRGBO(255, 188, 0, 1);
   static const Color ColorYellowWithOpacity = Color.fromRGBO(
       255, 188, 0, 0.23921568627450981);

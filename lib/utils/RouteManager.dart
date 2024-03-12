@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:oasis_restaurant/pages/food/DetailFoodPage.dart';
-import 'package:oasis_restaurant/pages/food/ListFoodByCategory.dart';
-import 'package:oasis_restaurant/pages/food/PanierPage.dart';
-import 'package:oasis_restaurant/pages/food/RechercheFoodPage.dart';
 import 'package:oasis_restaurant/pages/home/AccueilPagePage.dart';
+import 'package:oasis_restaurant/pages/repa/ListPlatPage.dart';
 import 'package:oasis_restaurant/pages/welcome/BienvenuPage.dart';
-import '../pages/food/category/CategoryPage.dart';
 import '../pages/home/HomePage.dart';
+import '../pages/repa/DetailFoodPage.dart';
+import '../pages/repa/ListFoodByCategory.dart';
+import '../pages/repa/PanierPage.dart';
+import '../pages/repa/RechercheFoodPage.dart';
+import '../pages/repa/category/CategoryPage.dart';
 import '../pages/welcome/Splashscreen.dart';
 import 'Routes.dart';
 
@@ -67,6 +68,12 @@ class RoutesManager {
         path: Routes.homepage,
         builder: (BuildContext context, GoRouterState state) {
           return  HomePage();
+        },
+      ),
+      GoRoute(
+        path: Routes.listPlat,
+        builder: (BuildContext context, GoRouterState state) {
+          return  ListPlatPage();
         },
       ),
       GoRoute(

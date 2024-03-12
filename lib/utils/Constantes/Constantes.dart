@@ -5,7 +5,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'colors.dart';
 
 class Constantes{
-  static const String  BASE_URL = "";
+  static const String  BASE_URL = "https://admin.oasis-rdc.com";
 
   static TextStyle styleTitleAppBar = TextStyle(
       color: Colors_App.Colorblack,
