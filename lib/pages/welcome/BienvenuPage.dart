@@ -1,6 +1,7 @@
 import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:oasis_restaurant/controller/RepasController.dart';
 import 'package:oasis_restaurant/utils/Constantes/colors.dart';
 import 'package:oasis_restaurant/utils/Routes.dart';
 import 'package:oasis_restaurant/utils/widget/Chargement.dart';
@@ -8,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../controller/AuthenticationController.dart';
+import '../../controller/CategorieController.dart';
 import '../../controller/UserController.dart';
 
 class BienvenuPage extends StatefulWidget {
@@ -18,7 +20,6 @@ class BienvenuPage extends StatefulWidget {
 }
 
 class _BienvenuPageState extends State<BienvenuPage> {
-  @override
 
   Faker fakerData = Faker();
   bool isVisible = false;

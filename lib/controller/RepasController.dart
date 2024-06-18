@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:oasis_restaurant/models/RepasModel.dart';
+import 'package:oasis_restaurant/utils/Constantes/Constantes.dart';
 
 import '../utils/Endpoints.dart';
 import '../utils/Requests.dart';
@@ -17,11 +18,12 @@ class RepasController with ChangeNotifier{
   void recuperRepasApi() async {
     var url = "${Endpoints.getRepas}";
     loading = true;
-    notifyListeners();
-    var reponse = await getData(url);
+    //notifyListeners();
+    var reponse = await getData(url, token: Constantes.token);
 
     if(reponse!=null && reponse != []){
       repas=reponse["data"].map<RepasModel>((e) => RepasModel.fromJson(e)).toList();
+      print("FOODS : ${reponse['data']}");
       isHttpException = false;
     }else{
       isHttpException = true;
