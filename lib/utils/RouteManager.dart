@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:oasis_restaurant/models/RepasModel.dart';
 import 'package:oasis_restaurant/pages/home/AccueilPagePage.dart';
 import 'package:oasis_restaurant/pages/repa/ListPlatPage.dart';
 import 'package:oasis_restaurant/pages/welcome/BienvenuPage.dart';
@@ -103,7 +104,9 @@ class RoutesManager {
       GoRoute(
         path: Routes.detailFoodpage,
         builder: (BuildContext context, GoRouterState state) {
-          return  DetailFoodPage();
+          final food = state.extra! as RepasModel;
+          print("================================================ : ${food.name}");
+          return  DetailFoodPage(food: food,);
         },
       ),
       GoRoute(

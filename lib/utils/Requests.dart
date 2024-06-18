@@ -32,7 +32,7 @@ Future<dynamic> getData(String url_api, {String? token}) async {
     var url = Uri.parse("${Constantes.BASE_URL}$url_api");
     var reponse = await http.get(url,
         headers: {
-          "Authorization":"Bearer ${token??storage.read(StockageKeys.token)}"}).timeout(Duration(seconds: 2)
+          "Authorization":"Bearer ${token??storage.read(StockageKeys.token)}"}).timeout(Duration(seconds: 5)
     );
     if (reponse.statusCode == 200) {
       return json.decode(reponse.body);
@@ -81,7 +81,7 @@ Future<HttpResponse> postData(String api_url, Map data, {String? token}) async {
     var response = await http.post(url, body: dataStr, headers: {
       "Content-Type": "application/json",
       "Authorization": "Bearer $_tkn"
-    }).timeout(Duration(seconds: 2));
+    }).timeout(Duration(seconds: 5));
     print("BODY : ${response.body}");
     if(!kReleaseMode){
       // alice.onHttpResponse(response);

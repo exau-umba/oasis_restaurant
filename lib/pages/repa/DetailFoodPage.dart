@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:oasis_restaurant/models/RepasModel.dart';
 import 'package:oasis_restaurant/utils/Constantes/Constantes.dart';
 import 'package:oasis_restaurant/utils/Constantes/PaddingDelimiter.dart';
 import 'package:oasis_restaurant/utils/Constantes/colors.dart';
@@ -7,14 +8,15 @@ import 'package:oasis_restaurant/utils/Routes.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 class DetailFoodPage extends StatefulWidget {
-  const DetailFoodPage({super.key});
+  final RepasModel? food;
+  DetailFoodPage({super.key, this.food});
 
   @override
   State<DetailFoodPage> createState() => _DetailFoodPageState();
 }
 
 class _DetailFoodPageState extends State<DetailFoodPage> {
-  int itemCount = 0;
+  int itemCount = 1;
   var ct;
   int itemPanier = 0;
   int price = 10;
@@ -22,7 +24,7 @@ class _DetailFoodPageState extends State<DetailFoodPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Constantes.leadingAppBar(GoRouter.of(context)),
+        //leading: Constantes.leadingAppBar(GoRouter.of(context)),
         backgroundColor: Colors.transparent,
         elevation: 0.sp,
         actions: [
@@ -79,8 +81,8 @@ class _DetailFoodPageState extends State<DetailFoodPage> {
                   margin: EdgeInsets.symmetric(horizontal: PaddingDelimiter.paddingHorizontal),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(20.sp),
-                    child: Image.asset(
-                        "assets/images/t2.png",
+                    child: Image.network(
+                        "${Constantes.BASE_URL}${widget.food?.fileImg}",
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -122,7 +124,7 @@ class _DetailFoodPageState extends State<DetailFoodPage> {
                     children: [
                       Flexible(
                         child: Text(
-                            "Burger",
+                          "${widget.food?.name}",
                           style: TextStyle(
                             fontSize: 20.sp,
                             fontWeight: FontWeight.w500,

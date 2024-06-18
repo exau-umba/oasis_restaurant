@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:oasis_restaurant/controller/RepasController.dart';
+import 'package:oasis_restaurant/utils/Constantes/Constantes.dart';
+import 'package:provider/provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../utils/Constantes/PaddingDelimiter.dart';
@@ -17,6 +20,8 @@ class ListPlatPage extends StatefulWidget {
 class _ListPlatPageState extends State<ListPlatPage> {
   @override
   Widget build(BuildContext context) {
+    var foodCtrl = context.read<RepasController>();
+    foodCtrl.recuperRepasApi();
     return Scaffold(
       backgroundColor: Colors_App.ColorGreyPage,
       appBar: AppBar(
@@ -84,6 +89,7 @@ class _ListPlatPageState extends State<ListPlatPage> {
     );
   }
   _body() {
+    var foodCtrl = context.watch<RepasController>();
     return GridView.builder(
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
@@ -95,8 +101,9 @@ class _ListPlatPageState extends State<ListPlatPage> {
           mainAxisSpacing: 20.sp, // spacing between rows
           crossAxisSpacing: 20.sp, // spacing between columns
         ),
-        itemCount: 8,
+        itemCount: foodCtrl.repas.length,
         itemBuilder: (context, index) {
+          var food = foodCtrl.repas[index];
           return InkWell(
             onTap: () {
               GoRouter.of(context).push(Routes.detailFoodpage);
@@ -133,7 +140,7 @@ class _ListPlatPageState extends State<ListPlatPage> {
                                 Positioned.fill(
                                     child: Image(
                                       image:
-                                      AssetImage("assets/images/t1.png"),
+                                      NetworkImage("${Constantes.BASE_URL}${food.fileImg}"),
                                       //images[index],
                                       fit: BoxFit.cover,
                                     )),
@@ -144,7 +151,7 @@ class _ListPlatPageState extends State<ListPlatPage> {
                         SizedBox(
                           height: 1.h,
                         ),
-                        Text("Cheese burger", //with_[index],
+                        Text("${food.name}", //with_[index],
                             style: TextStyle(
                               color: Colors_App.Colorblack,
                               fontWeight: FontWeight.bold,
@@ -172,7 +179,7 @@ class _ListPlatPageState extends State<ListPlatPage> {
                                 )
                               ],
                             ),
-                            Text("\$ 25.00", //prices[index],
+                            Text("\$ ${food.price}", //prices[index],
                                 style: TextStyle(
                                   color: Colors_App.Colorblack,
                                   fontWeight: FontWeight.bold,
