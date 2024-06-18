@@ -11,29 +11,35 @@ RepasModel repasModelFromJson(String str) => RepasModel.fromJson(json.decode(str
 String repasModelToJson(RepasModel data) => json.encode(data.toJson());
 
 class RepasModel {
-  int id;
-  String name;
-  double price;
-  int amount;
-  int isActive;
-  CategorieModel categoryFood;
+  int? id;
+  String? name;
+  int? price;
+  int? amount;
+  String? description;
+  String? fileImg;
+  int? isActive;
+  CategorieModel? categoryFood;
 
   RepasModel({
-    required this.id,
-    required this.name,
-    required this.price,
-    required this.amount,
-    required this.isActive,
-    required this.categoryFood,
+    this.id,
+    this.name,
+    this.price,
+    this.amount,
+    this.description,
+    this.fileImg,
+    this.isActive,
+    this.categoryFood,
   });
 
   factory RepasModel.fromJson(Map<String, dynamic> json) => RepasModel(
     id: json["id"],
     name: json["name"],
-    price: json["price"]?.toDouble(),
+    price: json["price"],
     amount: json["amount"],
+    description: json["description"],
+    fileImg: json["file_img"],
     isActive: json["is_active"],
-    categoryFood: CategorieModel.fromJson(json["category_food"]),
+    categoryFood: json["category_food"] == null ? null : CategorieModel.fromJson(json["category_food"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -41,7 +47,9 @@ class RepasModel {
     "name": name,
     "price": price,
     "amount": amount,
+    "description": description,
+    "file_img": fileImg,
     "is_active": isActive,
-    "category_food": categoryFood.toJson(),
+    "category_food": categoryFood?.toJson(),
   };
 }

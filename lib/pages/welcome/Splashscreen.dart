@@ -9,6 +9,7 @@ import 'package:oasis_restaurant/utils/Routes.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
+import '../../controller/CategorieController.dart';
 import '../../controller/UserController.dart';
 
 class Splashscreen extends StatefulWidget {
@@ -19,7 +20,6 @@ class Splashscreen extends StatefulWidget {
 }
 
 class _SplashscreenState extends State<Splashscreen> {
-  late Timer timer;
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
@@ -40,26 +40,12 @@ class _SplashscreenState extends State<Splashscreen> {
     super.initState();
   }
 
-  @override
-  void dispose() {
-    timer.cancel();
-
-    super.dispose();
-  }
   _naviguerVersHomePage(){
     GoRouter.of(context).go(Routes.homepage);
   }
 
   @override
   Widget build(BuildContext context) {
-    timer = Timer(Duration(seconds: 5), () {
-      setState(() {
-        /*MotionToast(
-            description: Text("Erreur de connexion"),
-            primaryColor: Colors_App.Colorwhite
-        );*/
-      });
-    });
     return Scaffold(
       backgroundColor: Colors_App.ColorYellow,
       body: Center(

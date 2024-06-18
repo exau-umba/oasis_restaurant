@@ -6,6 +6,7 @@ import 'colors.dart';
 
 class Constantes{
   static const String  BASE_URL = "https://admin.oasis-rdc.com";
+  static const String  token = "9|3CTu6SPTxdsuhJqplcESjq47O3BN4t3vdXYEhK3h2c2b6dbf";
 
   static TextStyle styleTitleAppBar = TextStyle(
       color: Colors_App.Colorblack,
