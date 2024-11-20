@@ -6,7 +6,8 @@ import 'colors.dart';
 
 class Constantes{
   static const String  BASE_URL = "https://admin.oasis-rdc.com";
-  static const String  token = "9|3CTu6SPTxdsuhJqplcESjq47O3BN4t3vdXYEhK3h2c2b6dbf";
+  //static const String  BASE_URL = "http://192.168.1.70:8000";
+  static const String  token = "12|HCplmAjIBmpgzoUaips8SwNLd9GIlQfbGz8o2tLpb606a373";
 
   static TextStyle styleTitleAppBar = TextStyle(
       color: Colors_App.Colorblack,
@@ -19,6 +20,30 @@ class Constantes{
       onPressed: (){
         route.pop();
       },
+    );
+  }
+
+  static AppBar WidgetAppBar({
+    bool centerTitle=true,
+    required String title,
+    Color? backgroundColor,
+    Color? surfaceTintColor,
+    List<Widget>? actions,
+    Widget? leading
+  }){
+    return AppBar(
+      leading: leading,
+      centerTitle: centerTitle,
+      surfaceTintColor: Colors_App.ColorGreen,
+      backgroundColor: Colors_App.Colorwhite,
+      title: Text(
+        title,
+        style: TextStyle(
+            fontSize: 25.0,
+            fontWeight: FontWeight.w600,
+            color: Colors_App.Colorblack),
+      ),
+      actions: actions,
     );
   }
 

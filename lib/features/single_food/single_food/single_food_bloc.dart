@@ -21,7 +21,7 @@ class SingleFoodBloc extends Bloc<SingleFoodEvent, SingleFoodState> {
         emit(LoadingSingleFoodState());
 
         try {
-          Food? food = await foodService.getSingleFoods(FetchSingleFoodEvent);
+          Food? food = await foodService.getSingleFoods(event.food.id);
           emit(SingleFoodSuccesState(food: food!));
         } catch (e) {
           emit(const SingleFoodErrorState(message: 'Une erreur est survenue'));

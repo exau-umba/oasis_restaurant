@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:oasis_restaurant/utils/Constantes/Constantes.dart';
 import 'package:oasis_restaurant/utils/Constantes/PaddingDelimiter.dart';
@@ -15,74 +17,156 @@ class PanierPage extends StatefulWidget {
 }
 
 class _PanierPageState extends State<PanierPage> {
-  int itemCount = 0;
+  int itemCount = 1;
   int platCount = 8;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        backgroundColor: Colors_App.Colorwhite,
-        elevation: 0.sp,
-        title: Text(
-          "Panier",
-          style: TextStyle(
-              fontSize: 20.sp,
-              color: Colors_App.Colorblack
-          ),
-        ),
+      appBar: Constantes.WidgetAppBar(
+          title: "Cart",
         actions: [
-          Container(
-            padding: EdgeInsets.all(5.sp),
-            margin: EdgeInsets.all(15.sp),
-            width: Adaptive.w(25),
-            decoration: BoxDecoration(
-                color: Colors_App.ColorYellow,
-                borderRadius: BorderRadius.circular(10.sp)
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                InkWell(
-                  child: Icon(Icons.search,),
-                  onTap: (){
-                    showSnackBar(context, "Bientôt disponible");
-                  },
-                ),
-                InkWell(
-                  child: Icon(
-                    Icons.delete,
-                    color: Colors_App.Colorwhite,
-                  ),
-                  onTap: (){
-                    ouvrirDialog(context, content: "Voulez-vous vraiment supprimer tout les plats  ?", title: "Suppression");
-                  },
-                ),
-              ],
-            ),
-          )
-        ],
+          IconButton(
+              onPressed: () {},
+              icon: Icon(Icons.delete,))
+        ]
       ),
-      body: _element(),
+      body: ListView.builder(
+        itemCount: platCount,
+          itemBuilder: (context, index){
+            return _food();
+          }
+      ),
       persistentFooterButtons: _footerPanier(),
       persistentFooterAlignment: AlignmentDirectional.center,
     );
   }
 
-  _element(){
+  _appBar() {
+    return AppBar(
+      backgroundColor: Colors_App.ColorGreen,
+      title: Text("Cart", style: TextStyle(
+          fontSize: 25.0,
+          fontWeight: FontWeight.w600,
+          color: Colors_App.Colorwhite),),
+      centerTitle: true,
+      actions: [
+        IconButton(
+            onPressed: () {},
+            icon: Icon(Icons.delete, color: Colors_App.Colorwhite,))
+      ],
+    );
+  }
+
+  _food() {
+    return Padding(
+      padding: EdgeInsets.all(20.sp),
+      child: Row(
+        //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: Adaptive.w(20),
+            height: 10.h,
+            decoration:
+                BoxDecoration(borderRadius: BorderRadius.circular(50.sp)),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(15.sp),
+              child: Image.asset(
+                "assets/images/t3.png",
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          SizedBox(
+            width: Adaptive.w(10),
+          ),
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Nom du food",
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                    color: Colors_App.Colorblack,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18.sp),
+              ),
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Category",
+                    style: TextStyle(color: Colors_App.ColorGreySection),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      IconButton(
+                        padding: EdgeInsets.zero,
+                        onPressed: (){
+                          setState(() {
+                            if (itemCount > 1) itemCount--;
+                          });
+                        },
+                        icon: Icon(
+                          Icons.remove_circle,
+                          color: Colors_App.ColorGreyPage,
+                          size: 22.sp,
+                        ),
+                      ),
+                      Text("${itemCount}"),
+                      IconButton(
+                        padding: EdgeInsets.zero,
+                        onPressed: (){
+                          setState(() {
+                            itemCount++;
+                          });
+                        },
+                        icon: Icon(
+                          Icons.add_circle,
+                          color: Colors_App.ColorYellow,
+                          size: 22.sp,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              Text(
+                "\$50.00",
+                style: TextStyle(
+                    color: Colors_App.ColorYellow, fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+
+        ],
+      ),
+    );
+  }
+
+  _element() {
     return ListView.separated(
         separatorBuilder: (context, index) => Divider(),
         itemCount: platCount,
         padding: EdgeInsets.only(top: 15.sp),
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
-        itemBuilder: (context, index){
+        itemBuilder: (context, index) {
           return ListTile(
-            onTap: (){
+            onTap: () {
               //GoRouter.of(context).push(Routes.detailFoodpage);
             },
-            onLongPress: () async{
-              ouvrirDialog(context,content: "Voulez-vous supprimer ce plat ?", title: "Suppression d'un plat",);
+            onLongPress: () async {
+              ouvrirDialog(
+                context,
+                content: "Voulez-vous supprimer ce plat ?",
+                title: "Suppression d'un plat",
+              );
             },
             dense: true,
             leading: Container(
@@ -96,12 +180,11 @@ class _PanierPageState extends State<PanierPage> {
               ),
             ),
             title: Text(
-                "Chawrama",
+              "Chawrama",
               style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 18.sp,
-                color: Colors_App.Colorblack
-              ),
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18.sp,
+                  color: Colors_App.Colorblack),
             ),
             subtitle: Column(
               mainAxisSize: MainAxisSize.min,
@@ -110,7 +193,7 @@ class _PanierPageState extends State<PanierPage> {
               children: [
                 Row(
                   children: [
-                    Text("\$ 25.00",//prices[index],
+                    Text("\$ 25.00", //prices[index],
                         style: TextStyle(
                           color: Colors_App.Colorblack,
                           fontSize: 16.sp,
@@ -125,141 +208,92 @@ class _PanierPageState extends State<PanierPage> {
                 ElevatedButton(
                     style: ButtonStyle(
                         shape: MaterialStatePropertyAll(CircleBorder()),
-                        backgroundColor: MaterialStatePropertyAll(Colors_App.ColorGrey),
+                        backgroundColor:
+                            MaterialStatePropertyAll(Colors_App.ColorGrey),
                         iconSize: MaterialStatePropertyAll(20.sp),
-                        minimumSize: MaterialStatePropertyAll(Size.fromRadius(16.sp))
-                    ),
-                    onPressed: (){
+                        minimumSize:
+                            MaterialStatePropertyAll(Size.fromRadius(16.sp))),
+                    onPressed: () {
                       setState(() {
                         itemCount++;
                       });
                     },
                     child: Icon(
-                        Icons.remove,
+                      Icons.remove,
                       size: 17.sp,
-                    )
-                ),
+                    )),
                 Text("0"),
                 ElevatedButton(
-                  style: ButtonStyle(
-                    shape: MaterialStatePropertyAll(CircleBorder()),
-                    backgroundColor: MaterialStatePropertyAll(Colors_App.ColorYellow),
-                    iconSize: MaterialStatePropertyAll(20.sp),
-                    minimumSize: MaterialStatePropertyAll(Size.fromRadius(16.sp))
-                  ),
-                    onPressed: (){
-                    setState(() {
-                      itemCount++;
-                    });
+                    style: ButtonStyle(
+                        shape: MaterialStatePropertyAll(CircleBorder()),
+                        backgroundColor:
+                            MaterialStatePropertyAll(Colors_App.ColorYellow),
+                        iconSize: MaterialStatePropertyAll(20.sp),
+                        minimumSize:
+                            MaterialStatePropertyAll(Size.fromRadius(16.sp))),
+                    onPressed: () {
+                      setState(() {
+                        itemCount++;
+                      });
                     },
                     child: Icon(
-                        Icons.add,
+                      Icons.add,
                       size: 17.sp,
-                    )
-                )
+                    ))
               ],
             ),
           );
-        }
-    );
+        });
   }
 
-  _footerPanier(){
-    return <Widget> [
+  _footerPanier() {
+    return <Widget>[
       Container(
-        padding: EdgeInsets.symmetric(horizontal: PaddingDelimiter.paddingHorizontal),
+        padding: EdgeInsets.symmetric(
+            horizontal: PaddingDelimiter.paddingHorizontal),
         child: Column(
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                    "Livraison :",
-                  style: TextStyle(
-                    fontSize: 18.sp
-                  ),
+                  "TOTAL",
+                  style:
+                      TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
                 ),
                 Text(
-                  "\$0.0",
-                  style: TextStyle(
-                      fontSize: 18.sp,
-                  ),
+                  "\$140.00",
+                  style:
+                      TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
                 ),
               ],
             ),
             SizedBox(
-              height: 1.5.h,
+              height: 2.h,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "TOTAL :",
-                  style: TextStyle(
-                      fontSize: 18.sp,
-                    fontWeight: FontWeight.bold
-                  ),
-                ),
-                Text(
-                  "\$140",
-                  style: TextStyle(
-                      fontSize: 18.sp,
-                      fontWeight: FontWeight.bold
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 20.sp,
-            ),
-            FractionallySizedBox(
-              widthFactor: 4.3.sp,
+            Container(
+              width: Adaptive.w(double.infinity),
               child: ElevatedButton(
-                style: TextButton.styleFrom(
-                  shape: StadiumBorder(),
-                  backgroundColor: Colors_App.ColorGreen,
-                  textStyle: TextStyle(
-                    fontSize: 16.sp, fontWeight: FontWeight.w500,
+                onPressed: () {},
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all( Radius.circular(20),),
                   ),
-                  padding: EdgeInsets.symmetric(vertical: 16.sp)
+              
+                  backgroundColor: Colors_App.ColorYellow, // Couleur de fond
                 ),
-                  onPressed: (){
-                    showSnackBar(context, "La commande sera bientôt disponible");
-                  },
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text("Commander"),
-                      Icon(
-                          Icons.arrow_forward_ios,
-                        size: 16.sp,
-                      ),
-                    ],
-                  )
+                child: Text('Commander', style: TextStyle(color: Colors_App.Colorwhite),),
               ),
             ),
-            SizedBox(height: 2.h,),
-            Text(
-                "Selectionnez le moyen de livraison et le mode de paiement à l'étape suivante.",
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: 2.h,),
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Image.asset(
-                    "assets/images/card_payement.jpg",
-                  width: Adaptive.w(75),
-                )
-              ],
-            )
+
           ],
         ),
       )
     ];
   }
-  ouvrirDialog(context, {required String title, required String content}) async {
+
+  ouvrirDialog(context,
+      {required String title, required String content}) async {
     bool? resulat = await showDialog<bool>(
       context: context,
       builder: (BuildContext context) {
@@ -279,7 +313,9 @@ class _PanierPageState extends State<PanierPage> {
             ),
             new TextButton(
               child: new Text(
-                "Confirmer", style: TextStyle(color: Colors.orange),),
+                "Confirmer",
+                style: TextStyle(color: Colors.orange),
+              ),
               onPressed: () {
                 Navigator.pop(context, true);
               },
@@ -290,16 +326,18 @@ class _PanierPageState extends State<PanierPage> {
     );
 
     if (resulat != null) {
-      var message = !resulat ? "Bientôt disponible" : "Suppression bientôt disponible";
+      var message =
+          !resulat ? "Bientôt disponible" : "Suppression bientôt disponible";
       showSnackBar(context, message);
     }
   }
+
   showSnackBar(context, String message) {
     final scaffold = ScaffoldMessenger.of(context);
     scaffold.showSnackBar(SnackBar(
       content: Text(message),
-      action:
-      SnackBarAction(label: 'OK',
+      action: SnackBarAction(
+          label: 'OK',
           textColor: Colors.orange,
           onPressed: scaffold.hideCurrentSnackBar),
     ));

@@ -185,7 +185,7 @@ class _RechercheFoodPageState extends State<RechercheFoodPage>
             left: PaddingDelimiter.paddingHorizontal,
             top: PaddingDelimiter.paddingHorizontal),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2, // number of items in each row
+          crossAxisCount: 1, // number of items in each row
           mainAxisSpacing: 20.sp, // spacing between rows
           crossAxisSpacing: 20.sp, // spacing between columns
         ),
@@ -225,12 +225,7 @@ class _RechercheFoodPageState extends State<RechercheFoodPage>
                             child: Stack(
                               children: [
                                 Positioned.fill(
-                                    child: Image(
-                                  image:
-                                      AssetImage("assets/images/t1.png"),
-                                  //images[index],
-                                  fit: BoxFit.cover,
-                                )),
+                                    child: Image.asset("assets/images/t1.png", fit: BoxFit.cover,)),
                               ],
                             ),
                           ),
@@ -280,21 +275,20 @@ class _RechercheFoodPageState extends State<RechercheFoodPage>
                   Align(
                     alignment: Alignment.topRight,
                     child: Container(
-                      margin: EdgeInsets.only(top: 5.sp),
-                      width: Adaptive.w(15),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          IconButton(
-                            icon: Icon(
-                              Icons.favorite,
-                              color: Colors_App.ColorYellow,
-                            ),
-                            onPressed: () {
-                              showSnackBar(context, "Bientôt disponible");
-                            },
-                          )
-                        ],
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.black45
+                      ),
+                      margin: EdgeInsets.only(top: 5.sp, right: 13.sp),
+                      width: Adaptive.w(10),
+                      child: IconButton(
+                        icon: Icon(
+                          Icons.favorite,
+                          color: Colors_App.ColorYellow,
+                        ),
+                        onPressed: () {
+                          showSnackBar(context, "Bientôt disponible");
+                        },
                       ),
                     ),
                   ),

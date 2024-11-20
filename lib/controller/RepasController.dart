@@ -5,6 +5,7 @@ import 'package:oasis_restaurant/utils/Constantes/Constantes.dart';
 
 import '../utils/Endpoints.dart';
 import '../utils/Requests.dart';
+import '../utils/StockageKeys.dart';
 
 class RepasController with ChangeNotifier{
   GetStorage? stockage;
@@ -16,7 +17,8 @@ class RepasController with ChangeNotifier{
   RepasController({this.stockage});
 
   void recuperRepasApi() async {
-    var url = "${Endpoints.getRepas}";
+    var url = "${Endpoints.food}";
+    var token = stockage?.read(StockageKeys.token);
     loading = true;
     //notifyListeners();
     var reponse = await getData(url, token: Constantes.token);
@@ -34,7 +36,7 @@ class RepasController with ChangeNotifier{
 
 
   void recuperOneRepaApi(repaId) async {
-    var urlWithRepaId = Endpoints.getSingleRepa.replaceAll("{id}", repaId.toString());
+    var urlWithRepaId = Endpoints.getSingleFood.replaceAll("{id}", repaId.toString());
     var url = "${urlWithRepaId}";
     loading = true;
     notifyListeners();

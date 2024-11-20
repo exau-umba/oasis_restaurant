@@ -18,7 +18,7 @@ class RepasModel {
   String? description;
   String? fileImg;
   int? isActive;
-  CategorieModel? categoryFood;
+  Categorie? categoryFood;
 
   RepasModel({
     this.id,
@@ -39,7 +39,7 @@ class RepasModel {
     description: json["description"],
     fileImg: json["file_img"],
     isActive: json["is_active"],
-    categoryFood: json["category_food"] == null ? null : CategorieModel.fromJson(json["category_food"]),
+    categoryFood: json["category_food"] == null ? null : Categorie.fromJson(json["category_food"]),
   );
 
   Map<String, dynamic> toJson() => {

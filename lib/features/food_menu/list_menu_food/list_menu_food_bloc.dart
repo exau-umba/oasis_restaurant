@@ -5,6 +5,7 @@ import 'package:equatable/equatable.dart';
 import 'package:oasis_restaurant/data/services/food_service.dart';
 
 import '../../../data/models/Food.dart';
+import '../../list_foods/list_foods/list_foods_bloc.dart';
 
 part 'list_menu_food_event.dart';
 part 'list_menu_food_state.dart';

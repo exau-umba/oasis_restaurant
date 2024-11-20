@@ -1,20 +1,51 @@
-[
-  {
-    "title": "Lombar Pizza",
-    "address": "East 46th Street",
-    "category": "Pizza, Italian",
-    "image": "assets/images/t1.png"
-  },
-  {
-    "title": "Sushi Bar",
-    "address": "210 Salt Pond Rd.",
-    "category": "Sushi, Japan",
-    "image": "assets/images/t2.png"
-  },
-  {
-    "title": "Steak House",
-    "address": "East 46th Street",
-    "category": "Steak, American",
-    "image": "assets/images/t3.png"
-  }
-]
+{
+  "foods": [
+    {
+      "id": 1,
+      "name": "Salades",
+      "price": 5,
+      "amount": 10,
+      "description": "description",
+      "file_img": "assets/images/t1.png",
+      "is_active": 1,
+      "category_food": ""
+    },
+    {
+      "id": 2,
+      "name": "Pizza",
+      "price": 20,
+      "amount": 5,
+      "description": "description",
+      "file_img": "assets/images/t3.png",
+      "is_active": 1,
+      "category_food": ""
+    },
+    {
+      "id": 3,
+      "name": "Oeuf cru au salades",
+      "price": 10,
+      "amount": 15,
+      "description": "description",
+      "file_img": "assets/images/t2.png",
+      "is_active": 1,
+      "category_food": ""
+    }
+  ],
+  "category": [
+    {
+      "id": 1,
+      "name": "Fast food",
+      "is_active": 1
+    },
+    {
+      "id": 2,
+      "name": "Food cru",
+      "is_active": 1
+    },
+    {
+      "id": 3,
+      "name": "Food delive",
+      "is_active": 1
+    }
+  ]
+}

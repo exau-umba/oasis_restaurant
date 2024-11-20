@@ -4,23 +4,31 @@ import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:oasis_restaurant/constants.dart';
 import 'package:oasis_restaurant/controller/CategorieController.dart';
 import 'package:oasis_restaurant/controller/RepasController.dart';
 import 'package:oasis_restaurant/data/models/Categorie.dart';
 import 'package:oasis_restaurant/data/models/Food.dart';
+import 'package:oasis_restaurant/features/food_menu/components/card_food_menu.dart';
+import 'package:oasis_restaurant/features/list_foods/list_foods/list_foods_bloc.dart';
 import 'package:oasis_restaurant/models/RepasModel.dart';
 import 'package:oasis_restaurant/utils/Constantes/Constantes.dart';
 import 'package:oasis_restaurant/utils/Constantes/PaddingDelimiter.dart';
 import 'package:oasis_restaurant/utils/Constantes/colors.dart';
 import 'package:oasis_restaurant/utils/Routes.dart';
+import 'package:oasis_restaurant/utils/data.dart';
+import 'package:oasis_restaurant/widget/app_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../features/food_menu/list_menu_food/list_menu_food_bloc.dart';
 import '../../features/list_home_categorie/list_categorie/categorie_bloc.dart';
 import '../../widget/custom_loader.dart';
+import '../../widget/scalton/medium_card_scalton.dart';
 
 class AccueilPagePage extends StatefulWidget {
   const AccueilPagePage({super.key});
@@ -30,9 +38,15 @@ class AccueilPagePage extends StatefulWidget {
 }
 
 class _AccueilPagePageState extends State<AccueilPagePage> {
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+      GlobalKey<RefreshIndicatorState>();
+  final ScrollController _scrollController = ScrollController();
+  bool _isUserScrolling = false;
+
   @override
   void initState() {
     BlocProvider.of<ListMenuFoodBloc>(context).add(FetchListMenuFoodEvent());
+    BlocProvider.of<ListFoodsBloc>(context).add(FetchListFoodsEvent());
     BlocProvider.of<CategorieBloc>(context).add(FetchCategorieEvent());
     super.initState();
   }
@@ -46,86 +60,28 @@ class _AccueilPagePageState extends State<AccueilPagePage> {
   ];
 
   @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     //var categoryCTrl = context.read<CategorieController>();
     //var foodCTrl = context.read<RepasController>();
     //foodCTrl.recuperRepasApi();
     //categoryCTrl.recuperCategoriesApi();
     return Scaffold(
-      appBar: _appBarT(AppBar().preferredSize.height),
-      backgroundColor: Colors_App.ColorGreyPage,
+      //appBar: _appBarT(AppBar().preferredSize.height),
+      appBar: Constantes.WidgetAppBar(
+          title: "Accueil",),
+      //backgroundColor: Colors_App.ColorGreyPage,
       body: _body(),
     );
   }
 
-  _appBar() {
-    return AppBar(
-      backgroundColor: Colors_App.ColorGreen,
-      toolbarHeight: 45.sp,
-      elevation: 0.sp,
-      title: Stack(
-        children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Bonjour Mr !",
-                    style: TextStyle(
-                        color: Colors_App.Colorwhite, fontSize: 16.sp),
-                  ),
-                  Badge(
-                      label: Text('0'),
-                      child: Icon(
-                        Ionicons.notifications,
-                        color: Colors_App.Colorwhite,
-                      ))
-                ],
-              ),
-              SizedBox(
-                height: 2.h,
-              ),
-              Container(
-                decoration: BoxDecoration(
-                    color: Colors_App.Colorwhite,
-                    boxShadow: [
-                      BoxShadow(
-                          color: Colors.black12,
-                          offset: Offset(0, 1),
-                          blurRadius: 10.sp)
-                    ],
-                    borderRadius: BorderRadius.all(Radius.circular(24.sp))),
-                child: TextField(
-                    textAlignVertical: TextAlignVertical.center,
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      hintText: "Recherche...",
-                      hintStyle: TextStyle(
-                          fontSize: 16.sp,
-                          color: Colors_App.ColorGrey,
-                          fontWeight: FontWeight.w500),
-                      contentPadding: EdgeInsets.all(18.sp),
-                      prefixIcon: Icon(
-                        Ionicons.search,
-                        color: Colors_App.ColorGreen,
-                      ),
-                    )),
-              )
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  PreferredSize _appBarT(double height) =>
-      PreferredSize(
-        preferredSize: Size(MediaQuery
-            .of(context)
-            .size
-            .width, height + 80),
+  PreferredSize _appBarT(double height) => PreferredSize(
+        preferredSize: Size(MediaQuery.of(context).size.width, height + 80),
         child: Stack(
           children: <Widget>[
             Container(
@@ -141,10 +97,7 @@ class _AccueilPagePageState extends State<AccueilPagePage> {
               ),
               color: Colors_App.ColorGreen,
               height: height + 75,
-              width: MediaQuery
-                  .of(context)
-                  .size
-                  .width,
+              width: MediaQuery.of(context).size.width,
             ),
 
             Container(), // Required some widget in between to float AppBar
@@ -180,89 +133,241 @@ class _AccueilPagePageState extends State<AccueilPagePage> {
       );
 
   _body() {
-    final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
-    GlobalKey<RefreshIndicatorState>();
-    return RefreshIndicator(
-      triggerMode: RefreshIndicatorTriggerMode.onEdge,
-      edgeOffset: 0.5,
-      color: Colors_App.ColorYellow,
-      key:_refreshIndicatorKey,
-      onRefresh: () async {
-        BlocProvider.of<ListMenuFoodBloc>(context).add(FetchListMenuFoodEvent());
-        BlocProvider.of<CategorieBloc>(context).add(FetchCategorieEvent());
-        return Future.delayed(Duration(seconds: 5));
+    return NotificationListener<ScrollNotification>(
+      onNotification: (ScrollNotification scrollInfo) {
+        // Détecter si l'utilisateur fait défiler
+        if (scrollInfo is UserScrollNotification) {
+          if (scrollInfo.direction != ScrollDirection.idle) {
+            setState(() {
+              _isUserScrolling = true;
+            });
+          } else {
+            setState(() {
+              _isUserScrolling = false;
+            });
+          }
+        }
+        return false;
       },
-      child: SingleChildScrollView(
-        child: Stack(
-          children: [
-            Column(
-              children: [
-                CarouselSlider(
-                  items: imageUrls.map((url) {
-                    return Container(
-                      margin: EdgeInsets.all(5.sp),
-                      child: Image.asset(
-                        url,
-                      ),
-                    );
-                  }).toList(),
-                  options: CarouselOptions(
+      child: RefreshIndicator(
+        triggerMode: RefreshIndicatorTriggerMode.onEdge,
+        edgeOffset: 0.5,
+        color: Colors_App.ColorYellow,
+        key: _refreshIndicatorKey,
+        onRefresh: () async {
+          BlocProvider.of<ListMenuFoodBloc>(context)
+              .add(FetchListMenuFoodEvent());
+          BlocProvider.of<CategorieBloc>(context).add(FetchCategorieEvent());
+          BlocProvider.of<ListFoodsBloc>(context).add(FetchListFoodsEvent());
+          return Future.delayed(const Duration(seconds: 4));
+        },
+        child: SingleChildScrollView(
+          controller: _scrollController,
+          physics: AlwaysScrollableScrollPhysics(),
+          child: Column(
+            children: [
+              CarouselSlider(
+                items: imageUrls.map((url) {
+                  return Container(
+                    margin: EdgeInsets.all(3.sp),
+                    child: Image.asset(
+                      url,
+                    ),
+                  );
+                }).toList(),
+                options: CarouselOptions(
                     autoPlay: true,
                     enlargeCenterPage: true,
                     aspectRatio: 16 / 9,
                     onPageChanged: (index, reason) {
-                      setState(() {
-                        _currentIndex = index;
-                      });
-                    },
-                  ),
+                      if (!_isUserScrolling) {
+                        // Éviter de reconstruire la page si l'utilisateur fait défiler
+                        setState(() {
+                          _currentIndex = index;
+                        });
+                      }
+                    }),
+              ),
+              //SizedBox(height: 0.h,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: imageUrls.map((url) {
+                  int index = imageUrls.indexOf(url);
+                  return Container(
+                    width: Adaptive.w(3),
+                    height: 1.h,
+                    margin: EdgeInsets.symmetric(
+                        vertical: 5.sp, horizontal: 2.0.sp),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: _currentIndex == index
+                          ? Colors_App.ColorYellow
+                          : Colors.grey,
+                    ),
+                  );
+                }).toList(),
+              ),
+              category(),
+              _menuDuJour(),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.sp),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Touts",
+                          style: TextStyle(
+                            color: Colors_App.Colorblack,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20.sp,
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () {},
+                          child: Row(children: [
+                            Text(
+                              "Autres",
+                              style: TextStyle(fontSize: 16.sp),
+                            ),
+                            SizedBox(
+                              width: Adaptive.w(2),
+                            ),
+                            Icon(
+                              Icons.arrow_forward,
+                              size: 20.sp,
+                            )
+                          ]),
+                        )
+                      ],
+                    ),
+                    Text(
+                        "Trouveez ici ce que notre cuisine propose aujourd'hui",
+                        style: TextStyle(
+                          color: Colors_App.ColorGrey,
+                          fontSize: 15.sp,
+                        ))
+                  ],
                 ),
-                //SizedBox(height: 0.h,),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: imageUrls.map((url) {
-                    int index = imageUrls.indexOf(url);
-                    return Container(
-                      width: Adaptive.w(3),
-                      height: 1.h,
-                      margin: EdgeInsets.symmetric(
-                          vertical: 5.sp, horizontal: 2.0.sp),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: _currentIndex == index
-                            ? Colors_App.ColorYellow
-                            : Colors.grey,
-                      ),
-                    );
-                  }).toList(),
-                ),
-                category(),
-                SizedBox(height: 2.h),
-                _menuDuJour()
-              ],
-            ),
-          ],
+              ),
+              _foodList()
+            ],
+          ),
         ),
       ),
     );
   }
 
   _menuDuJour() {
-    var foodCtrl = context.read<RepasController>();
-    List<RepasModel> menuDuJour =
-    foodCtrl.repas.where((element) => element.isActive == 1).toList();
     return BlocBuilder<ListMenuFoodBloc, ListMenuFoodState>(
       builder: (context, state) {
         if (state is ListMenuFoodSuccesState) {
           final List<Food> foods = state.foods;
           return foods.isEmpty
               ? const Center(
-            child: Text('Pas de food'),
-          )
+                  child: Text('Pas de foods'),
+                )
               : SingleChildScrollView(
+                  child: Container(
+                    padding: EdgeInsets.only(top: 15.sp, bottom: 15.sp),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(
+                              left: PaddingDelimiter.paddingHorizontal,
+                              bottom: PaddingDelimiter.paddingHorizontal,
+                              right: PaddingDelimiter.paddingHorizontal),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text("Menu ",
+                                      style: TextStyle(
+                                        color: Colors_App.Colorblack,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20.sp,
+                                      )),
+                                  InkWell(
+                                    onTap: () {
+                                      GoRouter.of(context)
+                                          .push(Routes.listPlat);
+                                    },
+                                    child: Container(
+                                        decoration: BoxDecoration(
+                                          color: Colors_App.ColorYellow,
+                                          borderRadius:
+                                              BorderRadius.circular(50.sp),
+                                        ),
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: 5.sp, horizontal: 13.sp),
+                                        margin: EdgeInsets.symmetric(
+                                            horizontal: PaddingDelimiter
+                                                .paddingHorizontal),
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Text(
+                                              "Voir autres plats",
+                                              style: TextStyle(
+                                                  color: Colors_App.Colorwhite),
+                                            ),
+                                            Icon(
+                                              Icons.arrow_forward_ios,
+                                              size: 16.sp,
+                                              color: Colors_App.Colorwhite,
+                                            )
+                                          ],
+                                        )),
+                                  ),
+                                ],
+                              ),
+                              Text(
+                                  "Trouveez ici ce que notre cuisine propose aujourd'hui",
+                                  style: TextStyle(
+                                    color: Colors_App.ColorGrey,
+                                    fontSize: 15.sp,
+                                  )),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                            height: 33.h,
+                            width: double.infinity,
+                            child: ListView(
+                              padding: EdgeInsets.only(
+                                  left: PaddingDelimiter.paddingHorizontal),
+                              scrollDirection: Axis.horizontal,
+                              children: foods
+                                  .asMap()
+                                  .entries
+                                  .map((e) => CardFoodMenu(
+                                      name: "${e.value.name}",
+                                      desc: "${e.value.description}",
+                                      file_img:
+                                          "${Constantes.BASE_URL}${e.value.fileImg}",
+                                      price: e.value.price!,
+                                      onTap: () {
+                                        GoRouter.of(context).push(
+                                            Routes.detailFoodpage,
+                                            extra: e.value.toJson());
+                                      }))
+                                  .toList(),
+                            )),
+                      ],
+                    ),
+                  ),
+                );
+        } else if (state is ListMenuFoodErrorState) {
+          List foods = DataApp.foods;
+          return SingleChildScrollView(
             child: Container(
               padding: EdgeInsets.only(top: 15.sp, bottom: 15.sp),
-              color: Colors_App.ColorYellowWithOpacity,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -271,12 +376,11 @@ class _AccueilPagePageState extends State<AccueilPagePage> {
                         left: PaddingDelimiter.paddingHorizontal,
                         bottom: PaddingDelimiter.paddingHorizontal,
                         right: PaddingDelimiter.paddingHorizontal),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text("Menu du jour ",
                                 style: TextStyle(
@@ -284,14 +388,44 @@ class _AccueilPagePageState extends State<AccueilPagePage> {
                                   fontWeight: FontWeight.bold,
                                   fontSize: 18.sp,
                                 )),
-                            Text(
-                                "Trouveez ici ce que notre cuisine propose aujourd'hui",
-                                style: TextStyle(
-                                  color: Colors_App.ColorYellow,
-                                  fontSize: 15.sp,
-                                )),
+                            InkWell(
+                              onTap: () {
+                                GoRouter.of(context).push(Routes.listPlat);
+                              },
+                              child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors_App.ColorYellow,
+                                    borderRadius: BorderRadius.circular(50.sp),
+                                  ),
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 5.sp, horizontal: 13.sp),
+                                  margin: EdgeInsets.symmetric(
+                                      horizontal:
+                                          PaddingDelimiter.paddingHorizontal),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text(
+                                        "Voir autres plats",
+                                        style: TextStyle(
+                                            color: Colors_App.Colorwhite),
+                                      ),
+                                      Icon(
+                                        Icons.arrow_forward_ios,
+                                        size: 16.sp,
+                                        color: Colors_App.Colorwhite,
+                                      )
+                                    ],
+                                  )),
+                            ),
                           ],
                         ),
+                        Text(
+                            "Trouvez ici ce que notre cuisine propose aujourd'hui",
+                            style: TextStyle(
+                              color: Colors_App.ColorYellow,
+                              fontSize: 15.sp,
+                            )),
                       ],
                     ),
                   ),
@@ -305,244 +439,24 @@ class _AccueilPagePageState extends State<AccueilPagePage> {
                         children: foods
                             .asMap()
                             .entries
-                            .map(
-                              (e) =>
-                              InkWell(
-                                onTap: (){
-                                  context.go(Routes.detailFoodpage, extra: e.value);
-                                },
-                                child: Card(
-                                  elevation: 0,
-                                  //color: Colors.white.withOpacity(.1),
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                      BorderRadius.circular(15.sp)),
-                                  margin: EdgeInsets.only(
-                                      right: PaddingDelimiter
-                                          .paddingHorizontal),
-                                  child: Stack(
-                                    children: [
-                                      Container(
-                                        decoration: BoxDecoration(
-                                            color: Colors_App.Colorwhite,
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(15.sp))),
-                                        padding: EdgeInsets.all(10.sp),
-                                        width: Adaptive.w(50),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                          children: [
-                                            ClipRRect(
-                                              borderRadius:
-                                              BorderRadius.only(
-                                                topLeft:
-                                                Radius.circular(12.sp),
-                                                topRight:
-                                                Radius.circular(12.sp),
-                                              ),
-                                              child: SizedBox(
-                                                height: 18.h,
-                                                width: Adaptive.w(
-                                                    double.infinity),
-                                                child: Stack(
-                                                  children: [
-                                                    Positioned.fill(
-                                                        child: Image(
-                                                          image: NetworkImage(
-                                                              "${Constantes
-                                                                  .BASE_URL}${e
-                                                                  .value
-                                                                  .fileImg}"),
-                                                          //images[index],
-                                                          fit: BoxFit.cover,
-                                                        )),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              height: 2.h,
-                                            ),
-                                            Text(
-                                                "${e.value.name}", //with_[index],
-                                                style: TextStyle(
-                                                  color:
-                                                  Colors_App.Colorblack,
-                                                  fontWeight:
-                                                  FontWeight.bold,
-                                                  fontSize: 18.sp,
-                                                )),
-                                            SizedBox(
-                                              height: 14.sp,
-                                            ),
-                                            Row(
-                                              crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  "0.0",
-                                                  style: TextStyle(
-                                                    fontSize: 14.sp,
-                                                  ),
-                                                ),
-                                                SizedBox(
-                                                  width: 8.sp,
-                                                ),
-                                                Icon(
-                                                  Ionicons.star,
-                                                  size: 14.sp,
-                                                  color: Colors_App
-                                                      .ColorYellow,
-                                                )
-                                              ],
-                                            ),
-                                            SizedBox(
-                                              height: 14.sp,
-                                            ),
-                                            Row(
-                                              children: [
-                                                Stack(
-                                                  children: [
-                                                    Align(
-                                                      alignment:
-                                                      Alignment.topLeft,
-                                                      child: Text(
-                                                          "\$ 30.00 ",
-                                                          style: TextStyle(
-                                                              color: Colors_App
-                                                                  .ColorGrey,
-                                                              fontSize:
-                                                              14.sp)),
-                                                    ),
-                                                    Container(
-                                                      margin:
-                                                      EdgeInsets.only(
-                                                          top: 11.sp),
-                                                      height: 0.1.h,
-                                                      width: Adaptive.w(9),
-                                                      color: Colors_App
-                                                          .ColorGrey,
-                                                    )
-                                                  ],
-                                                ),
-                                                Text("\$ ${e.value.price}",
-                                                    //prices[index],
-                                                    style: TextStyle(
-                                                      color: Colors_App
-                                                          .Colorblack,
-                                                      fontWeight:
-                                                      FontWeight.bold,
-                                                      fontSize: 16.sp,
-                                                    )),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Align(
-                                        alignment: Alignment.topRight,
-                                        child: Container(
-                                          margin:
-                                          EdgeInsets.only(top: 15.sp),
-                                          height: 3.h,
-                                          width: Adaptive.w(15),
-                                          decoration: BoxDecoration(
-                                            color: Colors_App.ColorYellow,
-                                            borderRadius: BorderRadius.only(
-                                                topLeft:
-                                                Radius.circular(12.sp)),
-                                          ),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                            MainAxisAlignment
-                                                .spaceEvenly,
-                                            children: [
-                                              Text(
-                                                "-50%",
-                                                //ratting[index].toString(),
-                                                style: TextStyle(
-                                                  color: Colors.white,
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                      Positioned(
-                                        right: 0.sp,
-                                        bottom: 5.sp,
-                                        child: InkWell(
-                                            onTap: () {
-                                              print("Hello");
-                                            },
-                                            child: ElevatedButton(
-                                                style: ButtonStyle(
-                                                    shape:
-                                                    MaterialStatePropertyAll(
-                                                        CircleBorder()),
-                                                    backgroundColor:
-                                                    MaterialStatePropertyAll(
-                                                        Colors_App
-                                                            .ColorYellow),
-                                                    iconSize:
-                                                    MaterialStatePropertyAll(
-                                                        20.sp),
-                                                    minimumSize:
-                                                    MaterialStatePropertyAll(
-                                                        Size.fromRadius(
-                                                            16.sp))),
-                                                onPressed: () {},
-                                                child: Icon(
-                                                  Icons.add,
-                                                  color: Colors_App.Colorwhite,
-                                                  size: 17.sp,
-                                                ))),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                        )
+                            .map((e) => CardFoodMenu(
+                                name: "${e.value.name}",
+                                desc: "${e.value.description}",
+                                file_img:
+                                    "${Constantes.BASE_URL}${e.value.fileImg}",
+                                price: e.value.price!,
+                                onTap: () {
+                                  GoRouter.of(context)
+                                      .push(Routes.detailFoodpage);
+                                  //GoRouter.of(context).go(Routes.detailFoodpage, extra: e.value.toJson());
+                                }))
                             .toList(),
                       )),
                   SizedBox(
                     height: 2.h,
                   ),
                   //specialCard(images[7]),
-                  Align(
-                    alignment: Alignment.bottomRight,
-                    child: InkWell(
-                      onTap: () {
-                        GoRouter.of(context).push(Routes.listPlat);
-                      },
-                      child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors_App.ColorYellow,
-                            borderRadius: BorderRadius.circular(50.sp),
-                          ),
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 13.sp, vertical: 5.sp),
-                          margin: EdgeInsets.symmetric(
-                              horizontal:
-                              PaddingDelimiter.paddingHorizontal),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                "Voir autres plats",
-                                style: TextStyle(
-                                    color: Colors_App.Colorwhite),
-                              ),
-                              Icon(
-                                Icons.arrow_forward_ios,
-                                size: 16.sp,
-                                color: Colors_App.Colorwhite,
-                              )
-                            ],
-                          )),
-                    ),
-                  ),
+
                   SizedBox(
                     height: 5.sp,
                   ),
@@ -550,100 +464,248 @@ class _AccueilPagePageState extends State<AccueilPagePage> {
               ),
             ),
           );
-        }
-        else if (state is ListMenuFoodErrorState) {
-          return Center(
-            child: Text(state.message),
-          );
         } else {
-          return const CustomLoader();
+          return buildFeaturedPartnersLoadingIndicator();
         }
       },
     );
   }
 
-  category() {
+  int?
+      _selectedCategoryId; // Stocke l'ID de la catégorie sélectionnée, null = toutes les catégories
+
+  Widget category() {
     var categoryCtrl = context.watch<CategorieController>();
-    //List<Categorie> categoriesActived = categoryCtrl.categories.where((element) => element.isActive == 1).toList();
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: EdgeInsets.symmetric(
-              horizontal: PaddingDelimiter.paddingHorizontal),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                "Que voulez-vous ?",
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              InkWell(
-                onTap: () {
-                  GoRouter.of(context).push(Routes.categorypage);
-                },
-                child: Container(
-                  padding: EdgeInsets.all(9.sp),
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(color: Colors_App.ColorYellow),
-                      color: Colors_App.Colorwhite),
-                  child: Icon(
-                    Icons.arrow_forward_ios,
-                    size: 16.sp,
-                    color: Colors_App.ColorYellow,
-                  ),
-                ),
-              )
-            ],
+        SizedBox(
+          height: 8.h,
+          width: double.infinity,
+          child: BlocBuilder<CategorieBloc, CategorieState>(
+            builder: (context, state) {
+              if (state is CategorieSuccesState) {
+                final List<Categorie> categories = state.categories;
+
+                return categories.isEmpty
+                    ? const Center(
+                        child: Text('Pas de categories trouvées'),
+                      )
+                    : ListView(
+                        scrollDirection: Axis.horizontal,
+                        padding: EdgeInsets.symmetric(
+                            horizontal: PaddingDelimiter.paddingHorizontal),
+                        children: [
+                          // Bouton pour afficher tous les foods
+                          Row(
+                            children: [
+                              ChoiceChip(
+                                padding: EdgeInsets.all(8),
+                                label: Row(
+                                  children: [
+                                    Icon(Icons.all_inclusive),
+                                    // Icône pour toutes les catégories
+                                    SizedBox(width: Adaptive.w(1)),
+                                    Text('Touts'),
+                                  ],
+                                ),
+                                selectedColor: Colors_App.ColorYellow,
+                                // Couleur de sélection
+                                selected: _selectedCategoryId == null,
+                                // Si aucune catégorie n'est sélectionnée
+                                onSelected: (bool selected) {
+                                  setState(() {
+                                    _selectedCategoryId =
+                                        null; // Réinitialise la sélection
+                                  });
+                                },
+                              ),
+                              SizedBox(width: Adaptive.w(5)),
+                            ],
+                          ),
+                          // Affichage des autres catégories
+                          ...categories.asMap().entries.map((e) => Row(
+                                children: [
+                                  ChoiceChip(
+                                    padding: EdgeInsets.all(8),
+                                    label: Text(e.value.name),
+                                    selectedColor: Colors_App.ColorGreen,
+                                    selected: _selectedCategoryId == e.value.id,
+                                    onSelected: (bool selected) {
+                                      setState(() {
+                                        _selectedCategoryId = selected
+                                            ? e.value.id
+                                            : null; // Sélectionne ou désélectionne la catégorie
+                                      });
+                                    },
+                                  ),
+                                  SizedBox(
+                                    width: Adaptive.w(5),
+                                  ),
+                                ],
+                              )),
+                        ],
+                      );
+              } else if (state is CategorieErrorState) {
+                return Center(
+                  child: Text(state.message),
+                );
+              } else {
+                return LoadingIndicatorCategory();
+              }
+            },
           ),
         ),
-        SizedBox(
-          height: 8.sp,
-        ),
-        SizedBox(
-            height: 12.h,
-            width: double.infinity,
-            child: BlocBuilder<CategorieBloc, CategorieState>(
-              builder: (context, state) {
-                if (state is CategorieSuccesState) {
-                  final List<Categorie> categories = state.categories;
-                  int? _value = 1;
-                  return categories.isEmpty ?
-                  const Center(
-                    child: Text('Pas de categorie'),
-                  ) : ListView(
-                    scrollDirection: Axis.horizontal,
-                    padding: EdgeInsets.symmetric(
-                        horizontal: PaddingDelimiter.paddingHorizontal),
-                    children:categories.asMap().entries.map((e) => Row(
-                      children: [
-                        ChoiceChip(
-                          padding: EdgeInsets.all(8),
-                          label: Text(e.value.name),
-                          selectedColor: Colors.green,
-                          selected: _value == e.value.id,
-                          onSelected: (bool selected) {
-                            setState(() {
-                              _value = selected ? e.value.id : null;
-                            });
-                            print("SELECTED : $_value");
-                          },
-                        ),
-                        SizedBox(width: Adaptive.w(5),)
-                      ],
-                    )).toList(),
-                  );
-                }else if (state is CategorieErrorState){
-                  return Center(
-                    child: Text(state.message),
-                  );
-                } else {
-                  return CustomLoader();
-                }
-              },
-            )),
       ],
+    );
+  }
+
+  Widget _foodList() {
+    return Padding(
+      padding: EdgeInsets.all(20.sp),
+      child: BlocBuilder<ListFoodsBloc, ListFoodsState>(
+        builder: (context, state) {
+          if (state is ListFoodSuccesState) {
+            final List<Food> foods = state.foods;
+
+            // Filtrer les aliments en fonction de la catégorie sélectionnée
+            final filteredFoods = _selectedCategoryId == null
+                ? foods // Affiche tous les aliments si aucune catégorie n'est sélectionnée
+                : foods
+                    .where(
+                        (food) => food.categoryFood?.id == _selectedCategoryId)
+                    .toList();
+
+            return filteredFoods.isEmpty
+                ? Center(
+                    child: Text("Pas de foods"),
+                  )
+                : Column(
+                    children: filteredFoods
+                        .asMap()
+                        .entries
+                        .map((e) => _cardFood(
+                            onTap: () {
+                              GoRouter.of(context).push(Routes.detailFoodpage,
+                                  extra: e.value.toJson());
+                            },
+                            urlImage:
+                                "${Constantes.BASE_URL}${e.value.fileImg}",
+                            nameFood: e.value.name!,
+                            category: e.value.categoryFood?.name,
+                            price: e.value.price!))
+                        .toList(),
+                  );
+          } else if (state is ListFoodErrorState) {
+            return Center(
+              child: Text(state.message),
+            );
+          } else {
+            return CircularProgressIndicator(
+              color: Colors_App.ColorYellow,
+            );
+          }
+        },
+      ),
+    );
+  }
+
+  Widget _cardFood({
+    required String urlImage,
+    required String nameFood,
+    String? category,
+    required Function onTap,
+    required int price,
+  }) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 10.sp),
+      child: InkWell(
+        onTap: onTap as void Function()?,
+        child: Row(
+          //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: Adaptive.w(20),
+              height: 10.h,
+              decoration:
+                  BoxDecoration(borderRadius: BorderRadius.circular(50.sp)),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(15.sp),
+                child: Image.network(
+                  urlImage,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+            SizedBox(
+              width: Adaptive.w(10),
+            ),
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  nameFood,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                      color: Colors_App.Colorblack,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18.sp),
+                ),
+                Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      category ?? "",
+                      style: TextStyle(color: Colors_App.ColorGreySection),
+                    ),
+                  ],
+                ),
+                Text(
+                  "\$${price}",
+                  style: TextStyle(
+                      color: Colors_App.ColorYellow,
+                      fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  SingleChildScrollView buildFeaturedPartnersLoadingIndicator() {
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: List.generate(
+          2,
+          (index) => const Padding(
+            padding: EdgeInsets.only(left: 16),
+            child: MediumCardScalton(),
+          ),
+        ),
+      ),
+    );
+  }
+
+  SingleChildScrollView LoadingIndicatorCategory() {
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: List.generate(
+          2,
+          (index) => const Padding(
+            padding: EdgeInsets.only(left: 16),
+            child: CustomLoader(),
+          ),
+        ),
+      ),
     );
   }
 }

@@ -33,8 +33,8 @@ class _BienvenuPageState extends State<BienvenuPage> {
     };
 
     Map data = {
-      "email": "umbaexauce233@gmail.com",
-      "password": "Oasis-rdc"
+      "email": "admin@example.com",
+      "password": "password"
     };
     var auth = context.watch<AuthenticationController>();
     return Scaffold(
@@ -113,7 +113,7 @@ class _BienvenuPageState extends State<BienvenuPage> {
                           shape: StadiumBorder(),
                           backgroundColor: Colors_App.ColorGreen,
                         ),
-                        child: Text("Commencer")),
+                        child: Text("Commencer", style: TextStyle(color: Colors_App.Colorwhite),)),
                   )
                 ],
               ),

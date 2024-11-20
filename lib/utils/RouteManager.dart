@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:oasis_restaurant/data/models/Food.dart';
 import 'package:oasis_restaurant/models/RepasModel.dart';
 import 'package:oasis_restaurant/pages/home/AccueilPagePage.dart';
 import 'package:oasis_restaurant/pages/repa/ListPlatPage.dart';
@@ -25,18 +26,6 @@ class RoutesManager {
       ),
       GoRoute(
         path: Routes.accueilpage,
-        pageBuilder: (context, state) {
-          return CustomTransitionPage(
-            transitionDuration: const Duration(seconds: 5),
-            key: state.pageKey,
-            child: AccueilPagePage(),
-            transitionsBuilder: (context, animation, secondaryAnimation, child) {
-              return FadeTransition(
-                opacity: CurveTween(curve: Curves.easeIn).animate(animation),
-                child: child,
-              );
-            },);
-        },
         builder: (BuildContext context, GoRouterState state) {
           return const AccueilPagePage();
         },
@@ -45,7 +34,7 @@ class RoutesManager {
         path: Routes.bienvenupage,
         pageBuilder: (context, state) {
           return CustomTransitionPage(
-            transitionDuration: const Duration(milliseconds: 120),
+            //transitionDuration: const Duration(milliseconds: 120),
             key: state.pageKey,
             child: BienvenuPage(),
             transitionsBuilder: (context, animation, secondaryAnimation, child) {
@@ -104,7 +93,9 @@ class RoutesManager {
       GoRoute(
         path: Routes.detailFoodpage,
         builder: (BuildContext context, GoRouterState state) {
-          final food = state.extra! as RepasModel;
+          final foodMap = state.extra as Map<String, dynamic>;
+          final food = Food.fromJson(foodMap);
+          print("================================================");
           print("================================================ : ${food.name}");
           return  DetailFoodPage(food: food,);
         },

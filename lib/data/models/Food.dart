@@ -6,9 +6,9 @@ import 'dart:convert';
 
 import 'package:oasis_restaurant/models/CategorieModel.dart';
 
-Food repasModelFromJson(String str) => Food.fromJson(json.decode(str));
+Food foodFromJson(String str) => Food.fromJson(json.decode(str));
 
-String repasModelToJson(Food data) => json.encode(data.toJson());
+String foodToJson(Food data) => json.encode(data.toJson());
 
 class Food {
   int? id;

@@ -50,6 +50,7 @@ class FoodService with ChangeNotifier{
     if(reponse!=null){
       food = Food.fromJson(reponse);
       isHttpException = false;
+      print("+++++++++++++++++++++++++++$food");
       return food;
     }else{
       isHttpException = true;

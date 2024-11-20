@@ -10,21 +10,21 @@ import '../utils/Requests.dart';
 class CategorieController with ChangeNotifier{
 
   GetStorage? stockage;
-  List<CategorieModel> categories = [];
+  List<Categorie> categories = [];
   bool loading = false;
   bool? isHttpException;
 
   CategorieController({this.stockage});
 
   void recuperCategoriesApi() async {
-    var url = "${Endpoints.getcategory}";
-    var token = StockageKeys.token;
+    var url = "${Endpoints.getcategorie}";
+    var token = stockage?.read(StockageKeys.token);
     loading = true;
     //notifyListeners();
     var reponse = await getData(url, token: Constantes.token);
 
     if(reponse!=null && reponse != []){
-      categories=reponse["data"].map<CategorieModel>((e) => CategorieModel.fromJson(e)).toList();
+      categories=reponse["data"].map<Categorie>((e) => Categorie.fromJson(e)).toList();
       print("CATEGORIES : ${reponse['data']}");
       isHttpException = false;
     }else{

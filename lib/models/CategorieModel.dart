@@ -4,22 +4,22 @@
 
 import 'dart:convert';
 
-CategorieModel categorieModelFromJson(String str) => CategorieModel.fromJson(json.decode(str));
+Categorie categorieModelFromJson(String str) => Categorie.fromJson(json.decode(str));
 
-String categorieModelToJson(CategorieModel data) => json.encode(data.toJson());
+String categorieModelToJson(Categorie data) => json.encode(data.toJson());
 
-class CategorieModel {
+class Categorie {
   int id;
   String name;
   int isActive;
 
-  CategorieModel({
+  Categorie({
     required this.id,
     required this.name,
     required this.isActive,
   });
 
-  factory CategorieModel.fromJson(Map<String, dynamic> json) => CategorieModel(
+  factory Categorie.fromJson(Map<String, dynamic> json) => Categorie(
     id: json["id"],
     name: json["name"],
     isActive: json["is_active"],

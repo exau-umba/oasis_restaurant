@@ -25,7 +25,7 @@ class _SplashscreenState extends State<Splashscreen> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       var userCtrl = context.read<UserController>();
       var auth = context.read<AuthenticationController>();
-      Future.delayed(Duration(seconds: 4), () async {
+      Future.delayed(Duration(seconds: 2), () async {
         if(userCtrl.isFirstTimeBienvenue){
           _naviguerVersHomePage();
         }
@@ -49,14 +49,7 @@ class _SplashscreenState extends State<Splashscreen> {
     return Scaffold(
       backgroundColor: Colors_App.ColorYellow,
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset("assets/icons/logo.png", width: Adaptive.w(30),),
-              SizedBox(height: 10.h,),
-              LoadingAnimationWidget.hexagonDots(color: Colors_App.ColorGreen, size: 30.sp),
-            ]
-        ),
+        child:Image.asset("assets/icons/logo.png", width: Adaptive.w(30),),
       ),
     );
   }
